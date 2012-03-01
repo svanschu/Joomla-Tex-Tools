@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="kunena" method="upgrade">
+        <name>plg_kunenatex</name>
+        <author>Benjamin Berg &amp; Sven Schultschik</author>
+        <creationDate>sw.build.date</creationDate>
+        <copyright>Copyright (C) 2012 Benjamin Berg &amp; Sven Schultschik.</copyright>
+        <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+        <authorEmail>admin@schultschik.de</authorEmail>
+        <authorUrl>www.schultschik.de</authorUrl>
+        <version>sw.build.version</version>
+        <build>sw.build.number</build>
+        <description>PLG_KUNENA_TEX_DESCRIPTION</description>
+        <files>
+                <filename plugin="kunenatex">kunenatex.php</filename>
+                <filename>index.html</filename>
+        </files>
+        <languages folder="language">
+            <language tag="de-DE">de-DE/de-DE.plg_kunenatex.ini</language>
+            <language tag="de-DE">de-DE/de-DE.plg_kunenatex.sys.ini</language>
+            <language tag="en-GB">en-GB/en-GB.plg_kunenatex.ini</language>
+            <language tag="en-GB">en-GB/en-GB.plg_kunenatex.sys.ini</language>
+        </languages>
+        <config>
+        </config>
+</extension>

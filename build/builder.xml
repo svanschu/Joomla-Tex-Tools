@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Override variables:
+    - Version number -Dbuild.version=0.0.0
+    All paths starts at the build folder
+    - Build dir -Dbuilddir=./../../packages/swsetgroup
+    - Sourcefiles -Dsrc=./..
+-->
+<project name="swsetgroup" default="build">
+    <!-- Version number of build -->
+    <property name="build.version" value="0.0.0" override="true" />
+    <!-- Set the build number -->
+    <!-- attention you need this additional Task to use the taskdef above
+        https://github.com/lorddarkangel/phing-buildnumber-task
+    -->
+    <taskdef name="buildnumber" classname="phing.tasks.ext.BuildnumberTask" />
+    <buildnumber file="build.txt" property="build.number" />
+    <!-- get the date for build -->
+    <tstamp prefix="build.date" />
+    <!-- Set the directory where the packages should be saved. Relative to the build dir -->
+    <property name="builddir" value="./../../packages/swsetgroup" override="true" />
+    <!-- Declare Project src files -->
+    <property name="src" value="./.." override="true" />
+    <property name="admin" value="${src}/com_swsetgroup/administrator/components/com_swsetgroup" />
+    <property name="frontend" value="${src}/com_swsetgroup/components/com_swsetgroup" />
+    <property name="plugins" value="${src}/plugin" />
+
+    <!-- Set the needed filesets. First admin folder -->
+    <fileset dir="${admin}" id="admin">
+        <include name="**" />
+        <exclude name="swsetgroup.xml" />
+        <exclude name="install.php" />
+    </fileset>
+    <!-- now frontend in main folder -->
+    <fileset dir="${frontend}" id="frontend">
+        <include name="**" />
+    </fileset>
+    <!-- plugins -->
+    <fileset dir="${plugins}" id="plugins">
+        <include name="**" />
+    </fileset>
+
+    <target name="build" depends="prepare, copy, zipplugins">
+        <zip destfile="${builddir}/swsetgroup_${build.version}_b${build.number}_${build.date.DSTAMP}.zip">
+            <fileset dir="${builddir}/tmp">
+                <include name="**" />
+            </fileset>
+        </zip>
+        <delete dir="${builddir}/tmp" />
+        <echo msg="Zip ALL OK!" />
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${builddir}/tmp/admin" />
+        <mkdir dir="${builddir}/tmp/site" />
+        <mkdir dir="${builddir}/tmp/admin/plugins" />
+        <echo msg="Create temp folder OK!" />
+    </target>
+
+    <target name="copy">
+        <!--Copy admin files to tmp folder -->
+        <copy todir="${builddir}/tmp/admin">
+            <fileset refid="admin" />
+        </copy>
+        <!-- Copy frontend files -->
+        <copy todir="${builddir}/tmp/site">
+            <fileset refid="frontend" />
+        </copy>
+        <!-- copy the plugins -->
+        <copy todir="${builddir}/tmp/admin/plugins">
+            <fileset refid="plugins" />
+        </copy>
+         <!-- Copy the manifest.xml -->
+        <copy file="${admin}/swsetgroup.xml" tofile="${builddir}/tmp/swsetgroup.xml" />
+        <copy file="${admin}/install.php" tofile="${builddir}/tmp/install.php" />
+        <echo msg="Copy was successfull" />
+        <!-- insert version, build number and date into the xml files -->
+        <reflexive>
+            <fileset dir="${builddir}/tmp/">
+                <include name="**" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="sw\.build\.version" replace="${build.version}" />
+                    <regexp pattern="sw\.build\.number" replace="${build.number}" />
+                    <regexp pattern="sw\.build\.date" replace="${build.date.DSTAMP}" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <target name="zipplugins">
+        <!-- zip the plugins -->
+        <zip destfile="${builddir}/tmp/admin/plugins/plg_swsetgroup_${build.version}_b${build.number}_${build.date.DSTAMP}.zip">
+            <fileset dir="${builddir}/tmp/admin/plugins">
+                <include name="swsetgroup/**" />
+            </fileset>
+        </zip>
+        <delete dir="${builddir}/tmp/admin/plugins/swsetgroup" />
+
+        <echo msg="Zip Plug-ins OK!" />
+    </target>
+</project>

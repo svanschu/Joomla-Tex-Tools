@@ -54,7 +54,7 @@ class plgKunenaKunenatex extends JPlugin
 
 		$bbcode->autolink_disable = 0;
 
-		$content_urlencoded = urlencode($content);
+		$content_urlencoded = rawurlencode($content);
 		return "<div class=\"latex\">\[".$content."\]</div>\n<img src=\"https://fachschaft.etec.uni-karlsruhe.de/cgi-bin/mimetex.cgi?$content_urlencoded\" />\n"; // Add noscript again ...
 	}
 }

@@ -22,6 +22,14 @@ class plgKunenaKunenatex extends JPlugin
 		parent::__construct($subject, $config);
 	}
 
+	public function onKunenaBbcodeEditorInit($editor)
+	{
+		$btn = simplexml_load_string('<?xml version="1.0" encoding="utf-8"?>
+			<button tag="tex" name="tex" title="PLG_KUNENATEX_BTN_TITLE" alt="PLG_KUNENATEX_BTN_ALT" />');
+
+		$editor->addButton($btn, 'after', 'code');
+	}
+
 	public function onKunenaBbcodeConstruct($bbcode)
 	{
 		$bbcode->AddRule('tex', array(

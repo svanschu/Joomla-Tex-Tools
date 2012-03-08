@@ -28,7 +28,6 @@ class plgKunenaKunenatex extends JPlugin
 			'mode' => BBCODE_MODE_CALLBACK,
 			'method' => 'plgKunenaKunenatex::onTex',
 			'allow' => array( 'type' => '/^[\w]*$/', ),
-			'class' => 'code',
 			'allow_in' => array('listitem', 'block', 'columns'),
 			'content' => BBCODE_VERBATIM,
 			'before_tag' => "sns",

@@ -28,6 +28,10 @@ class plgKunenaKunenatex extends JPlugin
 			<button tag="tex" name="tex" title="PLG_KUNENATEX_BTN_TITLE" alt="PLG_KUNENATEX_BTN_ALT" />');
 
 		$editor->addButton($btn, 'after', 'code');
+
+		// We need to add it in here already, because the BBcode parser is only loaded in a second request.
+		$document = &JFactory::getDocument();
+		$document->addScript("https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
 	}
 
 	public function onKunenaBbcodeConstruct($bbcode)

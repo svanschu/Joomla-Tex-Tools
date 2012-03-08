@@ -32,6 +32,16 @@ class plgKunenaKunenatex extends JPlugin
 		// We need to add it in here already, because the BBcode parser is only loaded in a second request.
 		$document = &JFactory::getDocument();
 		$document->addScript("https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
+
+		$document->addScriptDeclaration("window.addEvent('domready', function() {
+	preview = document.id('kbbcode-preview');
+
+	preview.addEvent('updated', function(event){
+				MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
+			}
+		);
+});");
+
 	}
 
 	public function onKunenaBbcodeConstruct($bbcode)

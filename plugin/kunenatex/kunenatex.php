@@ -24,10 +24,8 @@ class plgKunenaKunenatex extends JPlugin
 
 	public function onKunenaBbcodeEditorInit($editor)
 	{
-		$btn = simplexml_load_string('<?xml version="1.0" encoding="utf-8"?>
-			<button tag="tex" name="tex" title="PLG_KUNENATEX_BTN_TITLE" alt="PLG_KUNENATEX_BTN_ALT" />');
-
-		$editor->addButton($btn, 'after', 'code');
+		$btn = new KunenaBbCodeEditorButton('tex', 'tex', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
+		$editor->insertElement($btn, 'after', 'code');
 
 		// We need to add it in here already, because the BBcode parser is only loaded in a second request.
 		$document = &JFactory::getDocument();

@@ -27,9 +27,10 @@ class plgKunenaKunenatex extends JPlugin
 		$btn = new KunenaBbCodeEditorButton('tex', 'tex', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
 		$editor->insertElement($btn, 'after', 'code');
 
+		$url = $this->params->get('mathjax', 'https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 		// We need to add it in here already, because the BBcode parser is only loaded in a second request.
 		$document = &JFactory::getDocument();
-		$document->addScript("https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
+		$document->addScript($url);
 
 		$document->addScriptDeclaration("window.addEvent('domready', function() {
 	preview = document.id('kbbcode-preview');
@@ -58,14 +59,17 @@ class plgKunenaKunenatex extends JPlugin
 			'plain_end' => "\n")
 		);
 
+		$url = $this->params->get('mathjax', 'https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+
 		$document = &JFactory::getDocument();
-		$document->addScript("https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
+		$document->addScript($url);
 
 		return true;
 	}
 
 	static public function onTex($bbcode, $action, $name, $default, $params, $content)
 	{
+
 		if ($action == BBCODE_CHECK) {
 			$bbcode->autolink_disable = 1;
 			return true;
@@ -73,8 +77,22 @@ class plgKunenaKunenatex extends JPlugin
 
 		$bbcode->autolink_disable = 0;
 
+		$pconf = JPluginHelper::getPlugin('kunena', 'kunenatex');
+		$pconf = json_decode($pconf->params);
+
+		$url = $pconf->mimetex;
+
 		$content_urlencoded = rawurlencode($content);
-		return "<div class=\"latex\">\[".$content."\]</div>\n<img src=\"https://fachschaft.etec.uni-karlsruhe.de/cgi-bin/mimetex.cgi?$content_urlencoded\" />\n"; // Add noscript again ...
+		$html = '';
+		if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
+			$html .= "<div class=\"latex\">\[".$content."\]</div>\n";
+		}
+		if ( (isset($url) && $pconf->usetexrender == 'mimetex') || (isset($url) && $pconf->usetexrender == 'both')  ) {
+			if ( $pconf->usetexrender == 'both') $html .= "<noscript>";
+			$html .= "<img src=\"$url?$content_urlencoded\" />\n";
+			if ( $pconf->usetexrender == 'both') $html .= "</noscript>";
+		}
+		return $html;
 	}
 }
 

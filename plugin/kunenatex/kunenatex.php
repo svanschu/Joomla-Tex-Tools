@@ -8,7 +8,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://www.schultschik.de
  */
- 
+
 // No direct access
 defined('_JEXEC') or die;
 
@@ -17,22 +17,22 @@ jimport('joomla.plugin.plugin');
 class plgKunenaKunenatex extends JPlugin
 {
 
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
+    public function __construct(&$subject, $config)
+    {
+        parent::__construct($subject, $config);
+    }
 
-	public function onKunenaBbcodeEditorInit($editor)
-	{
-		$btn = new KunenaBbCodeEditorButton('tex', 'tex', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
-		$editor->insertElement($btn, 'after', 'code');
+    public function onKunenaBbcodeEditorInit($editor)
+    {
+        $btn = new KunenaBbCodeEditorButton('tex', 'tex', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
+        $editor->insertElement($btn, 'after', 'code');
 
-		$url = $this->params->get('mathjax', 'https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
-		// We need to add it in here already, because the BBcode parser is only loaded in a second request.
-		$document = &JFactory::getDocument();
-		$document->addScript($url);
+        $url = $this->params->get('mathjax', 'https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        // We need to add it in here already, because the BBcode parser is only loaded in a second request.
+        $document = &JFactory::getDocument();
+        $document->addScript($url);
 
-		$document->addScriptDeclaration("window.addEvent('domready', function() {
+        $document->addScriptDeclaration("window.addEvent('domready', function() {
 	preview = document.id('kbbcode-preview');
 
 	preview.addEvent('updated', function(event){
@@ -41,58 +41,58 @@ class plgKunenaKunenatex extends JPlugin
 		);
 });");
 
-	}
+    }
 
-	public function onKunenaBbcodeConstruct($bbcode)
-	{
-		$bbcode->AddRule('tex', array(
-			'mode' => BBCODE_MODE_CALLBACK,
-			'method' => 'plgKunenaKunenatex::onTex',
-			'allow' => array( 'type' => '/^[\w]*$/', ),
-			'allow_in' => array('listitem', 'block', 'columns'),
-			'content' => BBCODE_VERBATIM,
-			'before_tag' => "sns",
-			'after_tag' => "sn",
-			'before_endtag' => "sn",
-			'after_endtag' => "sns",
-			'plain_start' => "\n",
-			'plain_end' => "\n")
-		);
+    public function onKunenaBbcodeConstruct($bbcode)
+    {
+        $bbcode->AddRule('tex', array(
+                'mode' => BBCODE_MODE_CALLBACK,
+                'method' => 'plgKunenaKunenatex::onTex',
+                'allow' => array('type' => '/^[\w]*$/',),
+                'allow_in' => array('listitem', 'block', 'columns'),
+                'content' => BBCODE_VERBATIM,
+                'before_tag' => "sns",
+                'after_tag' => "sn",
+                'before_endtag' => "sn",
+                'after_endtag' => "sns",
+                'plain_start' => "\n",
+                'plain_end' => "\n")
+        );
 
-		$url = $this->params->get('mathjax', 'https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        $url = $this->params->get('mathjax', 'https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 
-		$document = &JFactory::getDocument();
-		$document->addScript($url);
+        $document = &JFactory::getDocument();
+        $document->addScript($url);
 
-		return true;
-	}
+        return true;
+    }
 
-	static public function onTex($bbcode, $action, $name, $default, $params, $content)
-	{
+    static public function onTex($bbcode, $action, $name, $default, $params, $content)
+    {
 
-		if ($action == BBCODE_CHECK) {
-			$bbcode->autolink_disable = 1;
-			return true;
-		}
+        if ($action == BBCODE_CHECK) {
+            $bbcode->autolink_disable = 1;
+            return true;
+        }
 
-		$bbcode->autolink_disable = 0;
+        $bbcode->autolink_disable = 0;
 
-		$pconf = JPluginHelper::getPlugin('kunena', 'kunenatex');
-		$pconf = json_decode($pconf->params);
+        $pconf = JPluginHelper::getPlugin('kunena', 'kunenatex');
+        $pconf = json_decode($pconf->params);
 
-		$url = $pconf->mimetex;
+        $url = $pconf->mimetex;
 
-		$content_urlencoded = rawurlencode($content);
-		$html = '';
-		if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
-			$html .= "<div class=\"latex\">\[".$content."\]</div>\n";
-		}
-		if ( (isset($url) && $pconf->usetexrender == 'mimetex') || (isset($url) && $pconf->usetexrender == 'both')  ) {
-			if ( $pconf->usetexrender == 'both') $html .= "<noscript>";
-			$html .= "<img src=\"$url?$content_urlencoded\" />\n";
-			if ( $pconf->usetexrender == 'both') $html .= "</noscript>";
-		}
-		return $html;
-	}
+        $content_urlencoded = rawurlencode($content);
+        $html = '';
+        if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
+            $html .= "<div class=\"latex\">\[" . $content . "\]</div>\n";
+        }
+        if ((isset($url) && $pconf->usetexrender == 'mimetex') || (isset($url) && $pconf->usetexrender == 'both')) {
+            if ($pconf->usetexrender == 'both') $html .= "<noscript>";
+            $html .= "<img src=\"$url?$content_urlencoded\" />\n";
+            if ($pconf->usetexrender == 'both') $html .= "</noscript>";
+        }
+        return $html;
+    }
 }
 

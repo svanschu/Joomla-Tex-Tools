@@ -33,7 +33,7 @@ class plgKunenaKunenatex extends JPlugin
         $document->addScript($url);
 
         $document->addStyleDeclaration("#Kunena #kbbcode-toolbar #tex {
-            background-image: url(\"".JURI::base( true )."/plugins/kunena/kunenatex/images/tex.png\");
+            background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\");
         }");
 
         $document->addScriptDeclaration("window.addEvent('domready', function() {

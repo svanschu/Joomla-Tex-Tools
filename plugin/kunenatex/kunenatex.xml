@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="1.7" type="plugin" group="kunena" method="upgrade">
-	<name>plg_kunenatex</name>
-	<author>Benjamin Berg &amp; Sven Schultschik</author>
-	<creationDate>sw.build.date</creationDate>
-	<copyright>Copyright (C) 2012 Benjamin Berg &amp; Sven Schultschik.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<authorEmail>admin@schultschik.de</authorEmail>
-	<authorUrl>www.schultschik.de</authorUrl>
-	<version>sw.build.version</version>
-	<build>sw.build.number</build>
-	<description>PLG_KUNENATEX_DESC</description>
-	<files>
+    <name>plg_kunenatex</name>
+    <author>Benjamin Berg &amp; Sven Schultschik</author>
+    <creationDate>sw.build.date</creationDate>
+    <copyright>Copyright (C) 2012 Benjamin Berg &amp; Sven Schultschik.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>admin@schultschik.de</authorEmail>
+    <authorUrl>www.schultschik.de</authorUrl>
+    <version>sw.build.version</version>
+    <build>sw.build.number</build>
+    <description>PLG_KUNENATEX_DESC</description>
+    <files>
         <folder>images</folder>
-		<filename plugin="kunenatex">kunenatex.php</filename>
-		<filename>index.html</filename>
-	</files>
-	<languages folder="language">
-		<language tag="de-DE">de-DE/de-DE.plg_kunena_kunenatex.ini</language>
-		<language tag="de-DE">de-DE/de-DE.plg_kunena_kunenatex.sys.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_kunena_kunenatex.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_kunena_kunenatex.sys.ini</language>
-	</languages>
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field name="usetexrender" type="radio" default="mathjax" label="PLG_KUNENATEX_USETEXRENDER"
-					   description="PLG_KUNENATEX_USETEXRENDER_DESC">
-					<option value="mathjax">MathJax</option>
-					<option value="mimetex">MimeTex</option>
-					<option value="both">PLG_KUNENATEX_BOTH</option>
-				</field>
-				<field name="mathjax" type="text" default="" label="PLG_KUNENATEX_MATHJAX_URL"
-					   description="PLG_KUNENATEX_MATHJAX_URL_DESC"> </field>
-				<field name="mimetex" type="text" default="" label="PLG_KUNENATEX_MIMETEX_URL"
-					   description="PLG_KUNENATEX_MIMETEX_URL_DESC"> </field>
-			</fieldset>
-		</fields>
-	</config>
+        <filename plugin="kunenatex">kunenatex.php</filename>
+        <filename>index.html</filename>
+    </files>
+    <languages folder="language">
+        <language tag="de-DE">de-DE/de-DE.plg_kunena_kunenatex.ini</language>
+        <language tag="de-DE">de-DE/de-DE.plg_kunena_kunenatex.sys.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_kunena_kunenatex.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_kunena_kunenatex.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="usetexrender" type="radio" default="mathjax" label="PLG_KUNENATEX_USETEXRENDER"
+                       description="PLG_KUNENATEX_USETEXRENDER_DESC">
+                    <option value="mathjax">MathJax</option>
+                    <option value="mimetex">MimeTex</option>
+                    <option value="both">PLG_KUNENATEX_BOTH</option>
+                </field>
+                <field name="mathjax" type="text" default="" label="PLG_KUNENATEX_MATHJAX_URL"
+                       description="PLG_KUNENATEX_MATHJAX_URL_DESC"></field>
+                <field name="mimetex" type="text" default="" label="PLG_KUNENATEX_MIMETEX_URL"
+                       description="PLG_KUNENATEX_MIMETEX_URL_DESC"></field>
+            </fieldset>
+        </fields>
+    </config>
 </extension>

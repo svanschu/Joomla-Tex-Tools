@@ -11,6 +11,7 @@
 	<build>sw.build.number</build>
 	<description>PLG_KUNENATEX_DESC</description>
 	<files>
+        <folder>images</folder>
 		<filename plugin="kunenatex">kunenatex.php</filename>
 		<filename>index.html</filename>
 	</files>
@@ -30,9 +31,9 @@
 					<option value="both">PLG_KUNENATEX_BOTH</option>
 				</field>
 				<field name="mathjax" type="text" default="" label="PLG_KUNENATEX_MATHJAX_URL"
-					   description="PLG_KUNENATEX_MATHJAX_URL_DESC"></field>
+					   description="PLG_KUNENATEX_MATHJAX_URL_DESC"> </field>
 				<field name="mimetex" type="text" default="" label="PLG_KUNENATEX_MIMETEX_URL"
-					   description="PLG_KUNENATEX_MIMETEX_URL_DESC"></field>
+					   description="PLG_KUNENATEX_MIMETEX_URL_DESC"> </field>
 			</fieldset>
 		</fields>
 	</config>

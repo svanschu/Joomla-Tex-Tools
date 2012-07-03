@@ -32,6 +32,10 @@ class plgKunenaKunenatex extends JPlugin
         $document = &JFactory::getDocument();
         $document->addScript($url);
 
+        $document->addStyleDeclaration("#Kunena #kbbcode-toolbar #tex {
+            background-image: url(\"".JURI::base( true )."/plugins/kunena/kunenatex/images/tex.png\");
+        }");
+
         $document->addScriptDeclaration("window.addEvent('domready', function() {
 	preview = document.id('kbbcode-preview');
 
@@ -79,7 +83,7 @@ class plgKunenaKunenatex extends JPlugin
 
         $pconf = JPluginHelper::getPlugin('kunena', 'kunenatex');
         $pconf = json_decode($pconf->params);
-
+        //get the mimetex URL
         $url = $pconf->mimetex;
 
         $content_urlencoded = rawurlencode($content);
@@ -87,7 +91,7 @@ class plgKunenaKunenatex extends JPlugin
         if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
             $html .= "<div class=\"latex\">\[" . $content . "\]</div>\n";
         }
-        if ((isset($url) && $pconf->usetexrender == 'mimetex') || (isset($url) && $pconf->usetexrender == 'both')) {
+        if ((isset($url) && ($pconf->usetexrender == 'mimetex') || $pconf->usetexrender == 'both')) {
             if ($pconf->usetexrender == 'both') $html .= "<noscript>";
             $html .= "<img src=\"$url?$content_urlencoded\" />\n";
             if ($pconf->usetexrender == 'both') $html .= "</noscript>";

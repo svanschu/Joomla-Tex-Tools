@@ -24,6 +24,7 @@ class plgKunenaKunenatex extends JPlugin
 
     public function onKunenaBbcodeEditorInit($editor)
     {
+        $this->loadLanguage();
         $btn = new KunenaBbCodeEditorButton('tex', 'tex', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
         $editor->insertElement($btn, 'after', 'code');
 

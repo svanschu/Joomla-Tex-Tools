@@ -26,6 +26,7 @@ class plgKunenaKunenatex extends JPlugin
     {
         $this->loadLanguage();
         $btn = new KunenaBbCodeEditorButton('tex', 'tex', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
+        $btn->addWrapSelectionAction();
         $editor->insertElement($btn, 'after', 'code');
 
         $url = $this->params->get('mathjax', 'https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');

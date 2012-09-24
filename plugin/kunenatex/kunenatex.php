@@ -43,6 +43,9 @@ class plgKunenaKunenatex extends JPlugin
 
 	preview.addEvent('updated', function(event){
 				MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
+				document.getElements('.latex').each(function(item, index) {
+                    item.setStyle('display', '');
+                });
 			}
 		);
 });");
@@ -69,6 +72,11 @@ class plgKunenaKunenatex extends JPlugin
 
         $document = &JFactory::getDocument();
         $document->addScript($url);
+        $document->addScriptDeclaration("window.addEvent('domready', function() {
+            document.getElements('.latex').each(function(item, index) {
+                item.setStyle('display', '');
+            });
+        });");
 
         return true;
     }
@@ -88,14 +96,16 @@ class plgKunenaKunenatex extends JPlugin
         //get the mimetex URL
         $url = $pconf->mimetex;
 
-        $content_urlencoded = rawurlencode($content);
+        $content_urlencoded = rawurlencode(html_entity_decode($content));
         $html = '';
+        $style = '';
+        if ($pconf->usetexrender == 'both') $style = "style=\"display: none\"";
         if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
-            $html .= "<div class=\"latex\">\[" . $content . "\]</div>\n";
+            $html .= "<div class=\"latex\" {$style}>\[" . $content . "\]</div>\n";
         }
         if ((isset($url) && ($pconf->usetexrender == 'mimetex') || $pconf->usetexrender == 'both')) {
             if ($pconf->usetexrender == 'both') $html .= "<noscript>";
-            $html .= "<img src=\"$url?$content_urlencoded\" />\n";
+            $html .= "<img src=\"$url?$content_urlencoded\" alt=\"{$content}\" title=\"{$content}\"/><br />";
             if ($pconf->usetexrender == 'both') $html .= "</noscript>";
         }
         return $html;

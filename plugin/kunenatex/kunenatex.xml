@@ -8,7 +8,6 @@
     <authorEmail>admin@schultschik.de</authorEmail>
     <authorUrl>www.schultschik.de</authorUrl>
     <version>sw.build.version</version>
-    <build>sw.build.number</build>
     <description>PLG_KUNENATEX_DESC</description>
     <files>
         <folder>images</folder>

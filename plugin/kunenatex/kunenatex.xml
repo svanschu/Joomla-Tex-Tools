@@ -24,7 +24,7 @@
         <fields name="params">
             <fieldset name="basic">
                 <field name="usetexrender" type="radio" default="mathjax" label="PLG_KUNENATEX_USETEXRENDER"
-                       description="PLG_KUNENATEX_USETEXRENDER_DESC">
+                       description="PLG_KUNENATEX_USETEXRENDER_DESC" class="radio btn-group">
                     <option value="mathjax">MathJax</option>
                     <option value="mimetex">MimeTex</option>
                     <option value="both">PLG_KUNENATEX_BOTH</option>

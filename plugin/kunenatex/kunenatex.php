@@ -31,7 +31,7 @@ class plgKunenaKunenatex extends JPlugin
 
         $url = $this->params->get('mathjax', 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
         // We need to add it in here already, because the BBcode parser is only loaded in a second request.
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addScript($url);
 
         $document->addStyleDeclaration("#Kunena #kbbcode-toolbar #tex {

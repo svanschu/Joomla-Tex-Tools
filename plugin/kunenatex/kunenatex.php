@@ -29,7 +29,7 @@ class plgKunenaKunenatex extends JPlugin
         $btn->addWrapSelectionAction();
         $editor->insertElement($btn, 'after', 'code');
 
-        $url = $this->params->get('mathjax', 'https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        $url = $this->params->get('mathjax', 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
         // We need to add it in here already, because the BBcode parser is only loaded in a second request.
         $document = &JFactory::getDocument();
         $document->addScript($url);
@@ -68,7 +68,7 @@ class plgKunenaKunenatex extends JPlugin
                 'plain_end' => "\n")
         );
 
-        $url = $this->params->get('mathjax', 'https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        $url = $this->params->get('mathjax', 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 
         $document = &JFactory::getDocument();
         $document->addScript($url);

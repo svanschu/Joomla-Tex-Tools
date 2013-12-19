@@ -70,7 +70,7 @@ class plgKunenaKunenatex extends JPlugin
 
         $url = $this->params->get('mathjax', 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addScript($url);
         $document->addScriptDeclaration("window.addEvent('domready', function() {
             document.getElements('.latex').each(function(item, index) {

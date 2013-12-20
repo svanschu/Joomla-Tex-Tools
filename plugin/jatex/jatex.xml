@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="content" method="upgrade">
+    <name>plg_jatex</name>
+    <author>Sven Schultschik</author>
+    <creationDate>sw.build.date</creationDate>
+    <copyright>Copyright (C) 2014 Sven Schultschik.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>admin@schultschik.de</authorEmail>
+    <authorUrl>extensions.schultschik.com</authorUrl>
+    <version>sw.build.version</version>
+    <description>PLG_JATEX_DESC</description>
+    <files>
+        <!--folder>images</folder-->
+        <filename plugin="jatex">jatex.php</filename>
+        <filename>index.html</filename>
+    </files>
+    <languages folder="language">
+        <!--language tag="de-DE">de-DE/de-DE.plg_kunena_kunenatex.ini</language>
+        <language tag="de-DE">de-DE/de-DE.plg_kunena_kunenatex.sys.ini</language-->
+        <language tag="en-GB">en-GB/en-GB.plg_content_jatex.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_content_jatex.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="usetexrender" type="radio" default="mathjax" label="PLG_JATEX_USETEXRENDER"
+                       description="PLG_JATEX_USETEXRENDER_DESC" class="radio btn-group">
+                    <option value="mathjax">MathJax</option>
+                    <option value="mimetex">MimeTex</option>
+                    <option value="both">PLG_JATEX_BOTH</option>
+                </field>
+                <field name="mathjax" type="text" default="" label="PLG_JATEX_MATHJAX_URL"
+                       description="PLG_JATEX_MATHJAX_URL_DESC"></field>
+                <field name="mimetex" type="text" default="" label="PLG_JATEX_MIMETEX_URL"
+                       description="PLG_JATEX_MIMETEX_URL_DESC"></field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

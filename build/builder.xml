@@ -7,7 +7,7 @@
     - Sourcefiles -Dsrc=./..
 -->
 <project name="swsetgroup" default="build">
-    <property name="extension_name" value="kunenatex" />
+    <property name="extension_name" value="JoomTexApps" />
     <!-- Version number of build -->
     <property name="build.version" value="0.0.0" override="true" />
     <!-- get the date for build -->
@@ -19,13 +19,21 @@
     <property name="plugins" value="${src}/plugin" />
 
     <!-- plugins -->
-    <fileset dir="${plugins}/${extension_name}" id="plugins">
+    <fileset dir="${plugins}/kunenatex" id="katex">
+        <include name="**" />
+    </fileset>
+    <fileset dir="${plugins}/jatex" id="jatex">
         <include name="**" />
     </fileset>
 
     <target name="build" depends="prepare, copy">
-        <zip destfile="${builddir}/${extension_name}_${build.version}_${build.date.DSTAMP}.zip">
-            <fileset dir="${builddir}/tmp">
+        <zip destfile="${builddir}/katex_${build.version}_${build.date.DSTAMP}.zip">
+            <fileset dir="${builddir}/tmp/katex">
+                <include name="**" />
+            </fileset>
+        </zip>
+        <zip destfile="${builddir}/jatex_${build.version}_${build.date.DSTAMP}.zip">
+            <fileset dir="${builddir}/tmp/jatex">
                 <include name="**" />
             </fileset>
         </zip>
@@ -34,14 +42,18 @@
     </target>
 
     <target name="prepare">
-        <mkdir dir="${builddir}/tmp/" />
+        <mkdir dir="${builddir}/tmp/katex/" />
+        <mkdir dir="${builddir}/tmp/jatex/" />
         <echo msg="Create temp folder OK!" />
     </target>
 
     <target name="copy">
         <!-- copy the plugins -->
-        <copy todir="${builddir}/tmp">
-            <fileset refid="plugins" />
+        <copy todir="${builddir}/tmp/katex">
+            <fileset refid="katex" />
+        </copy>
+        <copy todir="${builddir}/tmp/jatex">
+            <fileset refid="jatex" />
         </copy>
         <echo msg="Copy was successfull" />
         <!-- insert version, build number and date into the xml files -->

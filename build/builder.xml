@@ -27,7 +27,7 @@
     </fileset>
 
     <target name="build" depends="prepare, copy">
-        <zip destfile="${builddir}/katex_${build.version}_${build.date.DSTAMP}.zip">
+        <zip destfile="${builddir}/kunenatex_${build.version}_${build.date.DSTAMP}.zip">
             <fileset dir="${builddir}/tmp/katex">
                 <include name="**" />
             </fileset>

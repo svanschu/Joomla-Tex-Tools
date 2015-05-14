@@ -57,7 +57,7 @@ class plgContentJatex extends JPlugin
             //TODO add Log entry on faile
         }
 
-        $url = $this->params->get('mathjax', 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        $url = $this->params->get('mathjax', 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 
         $document = JFactory::getDocument();
         $document->addScript($url)

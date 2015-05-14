@@ -36,7 +36,7 @@ class plgContentJatex extends JPlugin
         $style = '';
         if ($pconf->usetexrender == 'both') $style = "style=\"display: none\"";
         if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
-            $html .= "<div class=\"latex\" {$style}>\[" . $treffer[1] . "\]</div>\n";
+            $html .= "<div class=\"latex\" {$style}>\[" . $treffer[1] . "\]</div>";
         }
         if ((isset($url) && ($pconf->usetexrender == 'mimetex') || $pconf->usetexrender == 'both')) {
             if ($pconf->usetexrender == 'both') $html .= "<noscript>";
@@ -49,7 +49,7 @@ class plgContentJatex extends JPlugin
 
     public function onContentPrepare($context, &$row, &$params, $page = 0)
     {
-        $text = preg_replace_callback("/\{jatex\}(.*)\{\/jatex\}/", array('plgContentJatex', 'convertLatex'), $row->text);
+        $text = preg_replace_callback("/\{jatex\}(.*)\{\/jatex\}/msSU", array('plgContentJatex', 'convertLatex'), $row->text);
 
         if ($text != NULL) {
             $row->text = $text;

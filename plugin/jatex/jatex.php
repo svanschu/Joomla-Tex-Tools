@@ -31,16 +31,34 @@ class plgContentJatex extends JPlugin
         //get the mimetex URL
         $url = $pconf->mimetex;
 
-        $content_urlencoded = rawurlencode(html_entity_decode($treffer[1]));
+        $class = '';
+        if (!empty($treffer[1])) {
+
+            $pieces = explode(',', $treffer[1]);
+
+            foreach ($pieces as $piece) {
+                switch ($piece) {
+                    case "inline":
+                        $class = "jatex-inline";
+                        $css = ".jatex-inline{display:inline;}
+                            .jatex-inline div.MathJax_Display{display: inline !important; width: auto;}";
+                        $document = JFactory::getDocument();
+                        $document->addStyleDeclaration($css);
+                        break;
+                }
+            }
+        }
+
+        $content_urlencoded = rawurlencode(html_entity_decode($treffer[2]));
         $html = '';
         $style = '';
         if ($pconf->usetexrender == 'both') $style = "style=\"display: none\"";
         if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
-            $html .= "<div class=\"latex\" {$style}>\[" . $treffer[1] . "\]</div>";
+            $html .= "<div class=\"latex {$class}\" {$style}>\[" . $treffer[2] . "\]</div>";
         }
         if ((isset($url) && ($pconf->usetexrender == 'mimetex') || $pconf->usetexrender == 'both')) {
             if ($pconf->usetexrender == 'both') $html .= "<noscript>";
-            $html .= "<img src=\"$url?$content_urlencoded\" alt=\"{$treffer[1]}\" title=\"{$treffer[1]}\"/><br />";
+            $html .= "<img src=\"$url?$content_urlencoded\" alt=\"{$treffer[2]}\" title=\"{$treffer[2]}\"/><br />";
             if ($pconf->usetexrender == 'both') $html .= "</noscript>";
         }
 
@@ -49,7 +67,7 @@ class plgContentJatex extends JPlugin
 
     public function onContentPrepare($context, &$row, &$params, $page = 0)
     {
-        $text = preg_replace_callback("/\{jatex\}(.*)\{\/jatex\}/msSU", array('plgContentJatex', 'convertLatex'), $row->text);
+        $text = preg_replace_callback("/\{jatex(?: options:)??(.*)\}((?:.|\n)*)\{\/jatex\}/U", array('plgContentJatex', 'convertLatex'), $row->text);
 
         if ($text != NULL) {
             $row->text = $text;

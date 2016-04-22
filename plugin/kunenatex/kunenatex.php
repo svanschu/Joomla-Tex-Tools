@@ -25,18 +25,21 @@ class plgKunenaKunenatex extends JPlugin
     public function onKunenaBbcodeEditorInit($editor)
     {
         $this->loadLanguage();
-        $btn = new KunenaBbCodeEditorButton('tex', 'tex', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
-        $btn->addWrapSelectionAction();
+        $btn = new KunenaBbCodeEditorButton('tex', 'texbutton', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
+        $btn->addWrapSelectionAction(null, null, null, "[tex]", "[/tex]");
         $editor->insertElement($btn, 'after', 'code');
 
-        $url = $this->params->get('mathjax', 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        $url = $this->params->get('mathjax', 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
         // We need to add it in here already, because the BBcode parser is only loaded in a second request.
         $document = JFactory::getDocument();
         $document->addScript($url);
 
-        $document->addStyleDeclaration("#Kunena #kbbcode-toolbar #tex {
-            background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\");
-        }");
+        if ($editor->isHMVC)
+        {
+            $document->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
+        } else {
+            $document->addStyleDeclaration("#Kunena #kbbcode-toolbar #tex { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
+        }
 
         $document->addScriptDeclaration("window.addEvent('domready', function() {
 	preview = document.id('kbbcode-preview');
@@ -68,15 +71,13 @@ class plgKunenaKunenatex extends JPlugin
                 'plain_end' => "\n")
         );
 
-        $url = $this->params->get('mathjax', 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        $url = $this->params->get('mathjax', 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 
         $document = JFactory::getDocument();
         $document->addScript($url);
-        $document->addScriptDeclaration("window.addEvent('domready', function() {
-            document.getElements('.latex').each(function(item, index) {
-                item.setStyle('display', '');
-            });
-        });");
+        if (!(KunenaFactory::getTemplate()->isHmvc())) {
+            $document->addScriptDeclaration("window.addEvent('domready', function() { document.getElements('.latex').each(function(item, index) { item.setStyle('display', ''); }); });");
+        }
 
         return true;
     }

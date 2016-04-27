@@ -34,11 +34,11 @@ class plgKunenaKunenatex extends JPlugin
         $document = JFactory::getDocument();
         $document->addScript($url);
 
-        if ($editor->isHMVC)
+        if (KunenaFactory::getTemplate()->isHmvc())
         {
             $document->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
         } else {
-            $document->addStyleDeclaration("#Kunena #kbbcode-toolbar #tex { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
+            $document->addStyleDeclaration("#Kunena #kbbcode-toolbar #texbutton { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
         }
 
         $document->addScriptDeclaration("window.addEvent('domready', function() {

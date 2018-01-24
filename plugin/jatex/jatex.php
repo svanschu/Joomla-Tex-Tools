@@ -85,7 +85,7 @@ class plgContentJatex extends JPlugin
             });
         });");*/
         $document->addScript($url)
-            ->addScriptDeclaration("$(function() {
+            ->addScriptDeclaration("jQuery(function($) {
             document.getElements('.latex').each(function(item, index) {
                 item.setStyle('display', '');
             });

@@ -1,0 +1,13 @@
+; License GNU General Public License version 2 or later; see LICENSE.txt, see LICENSE.php
+; Note : All ini files need to be saved as UTF-8 - No BOM
+
+PLG_KUNENATEX_USETEXRENDER="Utiliser rendu"
+PLG_KUNENATEX_USETEXRENDER_DESC="Choisir quel moteur de rendu LaTeX doit être utiliser."
+PLG_KUNENATEX_BOTH="Les deux"
+PLG_KUNENATEX_MATHJAX_URL="URL de Mathjax"
+PLG_KUNENATEX_MATHJAX_URL_DESC="Insérer votre URL de Mathjax. Si vous laissez vide, l'url par défaut sera utilisé."
+PLG_KUNENATEX_MIMETEX_URL="URL de Mimetex"
+PLG_KUNENATEX_MIMETEX_URL_DESC="Insérer votre URL de Mimetex. Si vous laissez vide, il sera désactivé."
+PLG_KUNENATEX_DESC="Ce plugin ajoute un bouton dans la bar de bbcode et rend vos chaînes LaTex avec mimetex ou mathjax"
+PLG_KUNENATEX_BTN_TITLE="LaTeX"
+PLG_KUNENATEX_BTN_ALT="Afficher LaTeX: [tex]LaTeX[/tex]"

@@ -4,7 +4,7 @@
  * JaTeX content Plugin
  *
  * @package        JaTeX
- * @Copyright (C) 2014 Schultschik Websolution, Sven Schultschik
+ * @Copyright (C) 2014 - 2019 Sven Schultschik
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://extensions.schultschik.com
  */

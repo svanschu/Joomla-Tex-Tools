@@ -1,10 +1,10 @@
 <?php
 /**
  * @version $Id: $
- * SW SetGroup User Plugin
+ * KaTeX Kunena TeX Plugin
  *
- * @package        SW SetGroup
- * @Copyright (C) 2012 Benjamin Berg & Sven Schultschik
+ * @package KaTeX
+ * @Copyright (C) 2012 - 2019 Sven Schultschik
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://www.schultschik.de
  */

@@ -78,18 +78,15 @@ class plgContentJatex extends JPlugin
         $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 
         $document = JFactory::getDocument();
-        /*$document->addScript($url)
-            ->addScriptDeclaration("window.addEvent('domready', function() {
-            document.getElements('.latex').each(function(item, index) {
-                item.setStyle('display', '');
-            });
-        });");*/
-        $document->addScript($url)
-            ->addScriptDeclaration("jQuery(function($) {
-            document.getElements('.latex').each(function(item, index) {
-                item.setStyle('display', '');
-            });
-        });");
+
+        // Only (url, mime, defer, async) is depricated, we use only (url)
+	    $document->addScript($url)
+		    ->addScriptDeclaration("jQuery(function($) {
+		        var elements = document.querySelectorAll('.latex');
+		        Array.prototype.forEach.call(elements, function(item, index){
+					item.style.display = '';
+				});
+		});");
 
         return true;
     }

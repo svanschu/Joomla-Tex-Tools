@@ -10,13 +10,10 @@
     <version>sw.build.version</version>
     <description>PLG_JATEX_DESC</description>
     <files>
-        <!--folder>images</folder-->
         <filename plugin="jatex">jatex.php</filename>
         <filename>index.html</filename>
     </files>
     <languages folder="language">
-        <!--language tag="de-DE">de-DE/de-DE.plg_kunena_kunenatex.ini</language>
-        <language tag="de-DE">de-DE/de-DE.plg_kunena_kunenatex.sys.ini</language-->
         <language tag="en-GB">en-GB/en-GB.plg_content_jatex.ini</language>
         <language tag="en-GB">en-GB/en-GB.plg_content_jatex.sys.ini</language>
     </languages>
@@ -36,4 +33,7 @@
             </fieldset>
         </fields>
     </config>
+    <updateservers>
+        <server type="extension" priority="2" name="SchuWeb JaTeX updates">https://github.com/svanschu/Joomla-Tex-Tools/raw/master/update/jatex.xml</server>
+    </updateservers>
 </extension>

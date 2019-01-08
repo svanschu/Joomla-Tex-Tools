@@ -81,12 +81,22 @@ class plgContentJatex extends JPlugin
 
         // Only (url, mime, defer, async) is depricated, we use only (url)
 	    $document->addScript($url)
-		    ->addScriptDeclaration("jQuery(function($) {
+		    ->addScriptDeclaration("
+		    function fn() {
 		        var elements = document.querySelectorAll('.latex');
 		        Array.prototype.forEach.call(elements, function(item, index){
 					item.style.display = '';
 				});
-		});");
+		    };
+		    
+		    function ready(fn) {
+                if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
+                    fn();
+                } else {
+                    document.addEventListener('DOMContentLoaded', fn);
+                }
+			};"
+		    );
 
         return true;
     }

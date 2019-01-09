@@ -20,41 +20,35 @@ class plgKunenaKunenatex extends JPlugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
+
+        // style to add button image
+	    $document = JFactory::getDocument();
+	    $document->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
     }
 
+    /*
+     * This method is for the editor on new topic or editing
+     * Dafault Kunena BBCode Editor Preview and button adding
+     */
     public function onKunenaBbcodeEditorInit($editor)
     {
         $this->loadLanguage();
-        $btn = new KunenaBbCodeEditorButton('tex', 'texbutton', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
+        $btn = new KunenaBbcodeEditorButton('tex', 'texbutton', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
         $btn->addWrapSelectionAction(null, null, null, "[tex]", "[/tex]");
         $editor->insertElement($btn, 'after', 'code');
 
-        $url = $this->params->get('mathjax', 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
         // We need to add it in here already, because the BBcode parser is only loaded in a second request.
         $document = JFactory::getDocument();
-        $document->addScript($url);
+        //$document->addScript($url);
 
-        if (KunenaFactory::getTemplate()->isHmvc())
-        {
-            $document->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
-        } else {
-            $document->addStyleDeclaration("#Kunena #kbbcode-toolbar #texbutton { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
-        }
 
-        $document->addScriptDeclaration("window.addEvent('domready', function() {
-	preview = document.id('kbbcode-preview');
-
-	preview.addEvent('updated', function(event){
-				MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
-				document.getElements('.latex').each(function(item, index) {
-                    item.setStyle('display', '');
-                });
-			}
-		);
-});");
 
     }
 
+    /*
+     * This method is used on displaying the thread
+     */
     public function onKunenaBbcodeConstruct($bbcode)
     {
         $bbcode->AddRule('tex', array(
@@ -76,8 +70,46 @@ class plgKunenaKunenatex extends JPlugin
         $document = JFactory::getDocument();
         $document->addScript($url);
         if (!(KunenaFactory::getTemplate()->isHmvc())) {
-            $document->addScriptDeclaration("window.addEvent('domready', function() { document.getElements('.latex').each(function(item, index) { item.setStyle('display', ''); }); });");
+            $document->addScriptDeclaration("
+            function katexbBBCodeConstruct() {
+                var elements = document.querySelectorAll('.katex');
+                Array.prototype.forEach.call(elements, function(item, index){
+                    item.style.display = '';
+                };
+            };
+            
+            function ready(katexbBBCodeConstruct) {
+                if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
+                    katexbBBCodeConstruct();
+                } else {
+                    document.addEventListener('DOMContentLoaded', katexbBBCodeConstruct);
+                }
+			};
+            ");
         }
+
+	    $document->addScriptDeclaration("
+		function katexPreview() {
+			var preview = document.getElementById('kbbcode-preview');
+			
+			preview.addEventListener('updated', function(){
+				MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
+				
+				var elements = document.querySelectorAll('.katex');
+		        Array.prototype.forEach.call(elements, function(item, index){
+					item.style.display = '';
+				});
+			});
+		};
+		
+		function ready(katexPreview) {
+            if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
+                katexPreview();
+            } else {
+                document.addEventListener('DOMContentLoaded', katexPreview);
+            }
+		};
+		");
 
         return true;
     }
@@ -102,7 +134,7 @@ class plgKunenaKunenatex extends JPlugin
         $style = '';
         if ($pconf->usetexrender == 'both') $style = "style=\"display: none\"";
         if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
-            $html .= "<div class=\"latex\" {$style}>\[" . $content . "\]</div>\n";
+            $html .= "<div class=\"katex\" {$style}>\[" . $content . "\]</div>\n";
         }
         if ((isset($url) && ($pconf->usetexrender == 'mimetex') || $pconf->usetexrender == 'both')) {
             if ($pconf->usetexrender == 'both') $html .= "<noscript>";

@@ -12,12 +12,9 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.plugin.plugin');
-
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 
 class plgKunenaKunenatex extends CMSPlugin
 {

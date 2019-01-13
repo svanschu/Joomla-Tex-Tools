@@ -32,29 +32,36 @@ class plgKunenaKunenatex extends CMSPlugin
 	    $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 	    Factory::getDocument()->addScript($url);
 
-	    // TODO try to use klick on preview instead of updated
+	    // We need to add it in here already, because the BBcode parser is only loaded in a second request.
 	    Factory::getDocument()
 		    ->addScriptDeclaration("
+		function kaTeXReady(fn) {
+            if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+		};
+		
 		function katexPreview() {
-			var preview = document.getElementById('kbbcode-preview');
-			
-			preview.addEventListener('updated', function(){
-				MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
-				
-				var elements = document.querySelectorAll('.katex');
-		        Array.prototype.forEach.call(elements, function(item, index){
-					item.style.display = '';
+			//var preview = document.getElementById('kbbcode-preview');
+			var previewClick = document.querySelectorAll(\"a[href='#preview']\");
+
+			Array.prototype.forEach.call(previewClick, function(item, index){
+				item.addEventListener('click', function(){
+					
+					MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
+
+					var elements = document.querySelectorAll('.katex');
+			        Array.prototype.forEach.call(elements, function(item, index){
+						item.style.display = '';
+					});
 				});
 			});
 		};
 		
-		function ready(katexPreview) {
-            if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
-                katexPreview();
-            } else {
-                document.addEventListener('DOMContentLoaded', katexPreview);
-            }
-		};
+		kaTeXReady(katexPreview);
+		
 		");
     }
 
@@ -68,12 +75,6 @@ class plgKunenaKunenatex extends CMSPlugin
         $btn = new KunenaBbcodeEditorButton('tex', 'texbutton', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
         $btn->addWrapSelectionAction(null, null, null, "[tex]", "[/tex]");
         $editor->insertElement($btn, 'after', 'code');
-
-
-        // We need to add it in here already, because the BBcode parser is only loaded in a second request.
-
-
-
     }
 
     /*
@@ -95,8 +96,6 @@ class plgKunenaKunenatex extends CMSPlugin
                 'plain_end' => "\n")
         );
 
-       // $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
-
         if (!(KunenaFactory::getTemplate()->isHmvc())) {
 	        Factory::getDocument()->addScriptDeclaration("
             function katexbBBCodeConstruct() {
@@ -106,17 +105,9 @@ class plgKunenaKunenatex extends CMSPlugin
                 });
             };
             
-            function ready(katexbBBCodeConstruct) {
-                if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
-                    katexbBBCodeConstruct();
-                } else {
-                    document.addEventListener('DOMContentLoaded', katexbBBCodeConstruct);
-                }
-			};
+            kaTeXReady(katexbBBCodeConstruct);
             ");
         }
-
-
 
         return true;
     }

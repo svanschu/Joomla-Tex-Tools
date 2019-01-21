@@ -4,7 +4,7 @@
  * JaTeX content Plugin
  *
  * @package        JaTeX
- * @Copyright (C) 2014 Schultschik Websolution, Sven Schultschik
+ * @Copyright (C) 2014 - 2019 Sven Schultschik
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://extensions.schultschik.com
  */
@@ -12,9 +12,11 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.plugin.plugin');
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
 
-class plgContentJatex extends JPlugin
+class plgContentJatex extends CMSPlugin
 {
     protected $pconf = null;
 
@@ -26,7 +28,7 @@ class plgContentJatex extends JPlugin
 
     static function convertLatex($treffer)
     {
-        $pconf = JPluginHelper::getPlugin('content', 'jatex');
+        $pconf = PluginHelper::getPlugin('content', 'jatex');
         $pconf = json_decode($pconf->params);
         //get the mimetex URL
         $url = $pconf->mimetex;
@@ -42,8 +44,8 @@ class plgContentJatex extends JPlugin
                         $class = "jatex-inline";
                         $css = ".jatex-inline{display:inline;}
                             .jatex-inline div.MathJax_Display{display: inline !important; width: auto;}";
-                        $document = JFactory::getDocument();
-                        $document->addStyleDeclaration($css);
+                        Factory::getDocument()
+	                        ->addStyleDeclaration($css);
                         break;
                 }
             }
@@ -75,21 +77,30 @@ class plgContentJatex extends JPlugin
             //TODO add Log entry on faile
         }
 
-        $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 
-        $document = JFactory::getDocument();
-        /*$document->addScript($url)
-            ->addScriptDeclaration("window.addEvent('domready', function() {
-            document.getElements('.latex').each(function(item, index) {
-                item.setStyle('display', '');
-            });
-        });");*/
-        $document->addScript($url)
-            ->addScriptDeclaration("jQuery(function($) {
-            document.getElements('.latex').each(function(item, index) {
-                item.setStyle('display', '');
-            });
-        });");
+        Factory::getDocument()
+        // Only (url, mime, defer, async) is depricated, we use only (url)
+	        ->addScript($url)
+		    ->addScriptDeclaration("
+		    function jatex() {
+		        var elements = document.querySelectorAll('.latex');
+		        Array.prototype.forEach.call(elements, function(item, index){
+					item.style.display = '';
+				});
+		    };
+		    
+		    function ready(fn) {
+                if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
+                    fn();
+                } else {
+                    document.addEventListener('DOMContentLoaded', fn);
+                }
+			};
+			
+			ready(jatex);
+			"
+		    );
 
         return true;
     }

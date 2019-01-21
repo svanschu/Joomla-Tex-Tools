@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="kunena" method="upgrade">
     <name>plg_kunenatex</name>
-    <author>Benjamin Berg &amp; Sven Schultschik</author>
+    <author>Sven Schultschik</author>
     <creationDate>sw.build.date</creationDate>
-    <copyright>Copyright (C) 2012 Benjamin Berg &amp; Sven Schultschik.</copyright>
+    <copyright>Copyright (C) 2012 - 2019 Sven Schultschik.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>admin@schultschik.de</authorEmail>
     <authorUrl>www.schultschik.de</authorUrl>
@@ -36,4 +36,7 @@
             </fieldset>
         </fields>
     </config>
+    <updateservers>
+        <server type="extension" priority="2" name="SchuWeb KaTeX updates">https://github.com/svanschu/Joomla-Tex-Tools/raw/master/update/katex.xml</server>
+    </updateservers>
 </extension>

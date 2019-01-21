@@ -1,10 +1,10 @@
 <?php
 /**
  * @version $Id: $
- * SW SetGroup User Plugin
+ * KaTeX Kunena TeX Plugin
  *
- * @package        SW SetGroup
- * @Copyright (C) 2012 Benjamin Berg & Sven Schultschik
+ * @package KaTeX
+ * @Copyright (C) 2012 - 2019 Sven Schultschik
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://www.schultschik.de
  */
@@ -12,49 +12,71 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.plugin.plugin');
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
 
-class plgKunenaKunenatex extends JPlugin
+class plgKunenaKunenatex extends CMSPlugin
 {
 
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
+
+        // style to add button image
+	    Factory::getDocument()->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
+
+	    $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+	    Factory::getDocument()->addScript($url);
+
+	    // We need to add it in here already, because the BBcode parser is only loaded in a second request.
+	    Factory::getDocument()
+		    ->addScriptDeclaration("
+		function kaTeXReady(fn) {
+            if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+		};
+		
+		function katexPreview() {
+			//var preview = document.getElementById('kbbcode-preview');
+			var previewClick = document.querySelectorAll(\"a[href='#preview']\");
+
+			Array.prototype.forEach.call(previewClick, function(item, index){
+				item.addEventListener('click', function(){
+					
+					MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
+
+					var elements = document.querySelectorAll('.katex');
+			        Array.prototype.forEach.call(elements, function(item, index){
+						item.style.display = '';
+					});
+				});
+			});
+		};
+		
+		kaTeXReady(katexPreview);
+		
+		");
     }
 
+    /*
+     * This method is for the editor on new topic or editing
+     * Default Kunena BBCode Editor Preview and button adding
+     */
     public function onKunenaBbcodeEditorInit($editor)
     {
         $this->loadLanguage();
-        $btn = new KunenaBbCodeEditorButton('tex', 'texbutton', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
+        $btn = new KunenaBbcodeEditorButton('tex', 'texbutton', 'tex', 'PLG_KUNENATEX_BTN_TITLE', 'PLG_KUNENATEX_BTN_ALT');
         $btn->addWrapSelectionAction(null, null, null, "[tex]", "[/tex]");
         $editor->insertElement($btn, 'after', 'code');
-
-        $url = $this->params->get('mathjax', 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
-        // We need to add it in here already, because the BBcode parser is only loaded in a second request.
-        $document = JFactory::getDocument();
-        $document->addScript($url);
-
-        if (KunenaFactory::getTemplate()->isHmvc())
-        {
-            $document->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
-        } else {
-            $document->addStyleDeclaration("#Kunena #kbbcode-toolbar #texbutton { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
-        }
-
-        $document->addScriptDeclaration("window.addEvent('domready', function() {
-	preview = document.id('kbbcode-preview');
-
-	preview.addEvent('updated', function(event){
-				MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
-				document.getElements('.latex').each(function(item, index) {
-                    item.setStyle('display', '');
-                });
-			}
-		);
-});");
-
     }
 
+    /*
+     * This method is used on displaying the thread
+     */
     public function onKunenaBbcodeConstruct($bbcode)
     {
         $bbcode->AddRule('tex', array(
@@ -71,12 +93,17 @@ class plgKunenaKunenatex extends JPlugin
                 'plain_end' => "\n")
         );
 
-        $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
-
-        $document = JFactory::getDocument();
-        $document->addScript($url);
         if (!(KunenaFactory::getTemplate()->isHmvc())) {
-            $document->addScriptDeclaration("window.addEvent('domready', function() { document.getElements('.latex').each(function(item, index) { item.setStyle('display', ''); }); });");
+	        Factory::getDocument()->addScriptDeclaration("
+            function katexbBBCodeConstruct() {
+                var elements = document.querySelectorAll('.katex');
+                Array.prototype.forEach.call(elements, function(item, index){
+                    item.style.display = '';
+                });
+            };
+            
+            kaTeXReady(katexbBBCodeConstruct);
+            ");
         }
 
         return true;
@@ -92,7 +119,7 @@ class plgKunenaKunenatex extends JPlugin
 
         $bbcode->autolink_disable = 0;
 
-        $pconf = JPluginHelper::getPlugin('kunena', 'kunenatex');
+        $pconf = PluginHelper::getPlugin('kunena', 'kunenatex');
         $pconf = json_decode($pconf->params);
         //get the mimetex URL
         $url = $pconf->mimetex;
@@ -102,7 +129,7 @@ class plgKunenaKunenatex extends JPlugin
         $style = '';
         if ($pconf->usetexrender == 'both') $style = "style=\"display: none\"";
         if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
-            $html .= "<div class=\"latex\" {$style}>\[" . $content . "\]</div>\n";
+            $html .= "<div class=\"katex\" {$style}>\[" . $content . "\]</div>\n";
         }
         if ((isset($url) && ($pconf->usetexrender == 'mimetex') || $pconf->usetexrender == 'both')) {
             if ($pconf->usetexrender == 'both') $html .= "<noscript>";

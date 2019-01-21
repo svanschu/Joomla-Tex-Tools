@@ -36,4 +36,7 @@
             </fieldset>
         </fields>
     </config>
+    <updateservers>
+        <server type="extension" priority="2" name="SchuWeb KaTeX updates">https://github.com/svanschu/Joomla-Tex-Tools/raw/master/update/katex.xml</server>
+    </updateservers>
 </extension>

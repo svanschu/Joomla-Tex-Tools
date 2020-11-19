@@ -26,8 +26,21 @@ class plgKunenaKunenatex extends CMSPlugin
         // style to add button image
 	    Factory::getDocument()->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
 
-	    $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
-	    Factory::getDocument()->addScript($url);
+//	    Factory::getDocument()->addScriptDeclaration("
+//	    MathJax = {
+//            tex: {
+//                inlineMath: [['\[katex\]', '\[\/katex\]'], ['$', '$'], ['\\(', '\\)']]
+//  },
+//  svg: {
+//    fontCache: 'global'
+//  }
+//};
+//	    ");
+
+		    Factory::getDocument()->addScript("/media/plg_kunenatex/kunenatex.js");
+
+	    $url = $this->params->get('mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
+	    Factory::getDocument()->addScript($url, array(), array('id' => 'MathJax-script', 'async' => 'async'));
 
 	    // We need to add it in here already, because the BBcode parser is only loaded in a second request.
 	    Factory::getDocument()
@@ -41,18 +54,20 @@ class plgKunenaKunenatex extends CMSPlugin
 		};
 		
 		function katexPreview() {
-			//var preview = document.getElementById('kbbcode-preview');
 			var previewClick = document.querySelectorAll(\"a[href='#preview']\");
 
 			Array.prototype.forEach.call(previewClick, function(item, index){
 				item.addEventListener('click', function(){
+					const node = document.getElementById('kbbcode-preview');
+					//MathJax.typesetPromise(node).then(() => {}).catch((err) => console.log(err.message));
 					
-					MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
+					
+					//MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
 
-					var elements = document.querySelectorAll('.katex');
-			        Array.prototype.forEach.call(elements, function(item, index){
-						item.style.display = '';
-					});
+					//var elements = document.querySelectorAll('.katex');
+			        //Array.prototype.forEach.call(elements, function(item, index){
+					//	item.style.display = '';
+					//});
 				});
 			});
 		};

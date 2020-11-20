@@ -26,25 +26,14 @@ class plgKunenaKunenatex extends CMSPlugin
         // style to add button image
 	    Factory::getDocument()->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
 
-//	    Factory::getDocument()->addScriptDeclaration("
-//	    MathJax = {
-//            tex: {
-//                inlineMath: [['\[katex\]', '\[\/katex\]'], ['$', '$'], ['\\(', '\\)']]
-//  },
-//  svg: {
-//    fontCache: 'global'
-//  }
-//};
-//	    ");
-
-		    Factory::getDocument()->addScript("/media/plg_kunenatex/kunenatex.js");
+	    Factory::getDocument()->addScript("/media/plg_kunenatex/kunenatex.js");
 
 	    $url = $this->params->get('mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
 	    Factory::getDocument()->addScript($url, array(), array('id' => 'MathJax-script', 'async' => 'async'));
 
 	    // We need to add it in here already, because the BBcode parser is only loaded in a second request.
-	    Factory::getDocument()
-		    ->addScriptDeclaration("
+	    Factory::getDocument()->addScript("/media/plg_kunenatex/katex.js");
+		 /*   ->addScriptDeclaration("
 		function kaTeXReady(fn) {
             if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
                 fn();
@@ -54,27 +43,30 @@ class plgKunenaKunenatex extends CMSPlugin
 		};
 		
 		function katexPreview() {
-			var previewClick = document.querySelectorAll(\"a[href='#preview']\");
+			var kbbcodepreview = document.getElementById('kbbcode-preview');
+			function mutationCallback(mutationsList, observer) {
+                for (const mutation of mutationsList) {
+                    if (mutation.type === 'attributes') {
+                        if (mutation.attributeName === 'style') {
+                            var styleAttribute = mutation.target.attributes.style.value;
+                            if (styleAttribute.includes('display: block')){
+                                MathJax.typesetClear([kbbcodepreview]);
+                                MathJax.typeset([kbbcodepreview]);
+                            }
+                        }
+                    }
+                }
+			}
 
-			Array.prototype.forEach.call(previewClick, function(item, index){
-				item.addEventListener('click', function(){
-					const node = document.getElementById('kbbcode-preview');
-					//MathJax.typesetPromise(node).then(() => {}).catch((err) => console.log(err.message));
-					
-					
-					//MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
-
-					//var elements = document.querySelectorAll('.katex');
-			        //Array.prototype.forEach.call(elements, function(item, index){
-					//	item.style.display = '';
-					//});
-				});
-			});
+			// Create an observer instance linked to the callback function
+            const observer = new MutationObserver(mutationCallback);
+            // What to observe
+            const mutationConfig = { attributes: true, childList: true, subtree: true, characterData: true };
+            observer.observe(kbbcodepreview, mutationConfig);
 		};
 		
 		kaTeXReady(katexPreview);
-		
-		");
+		");*/
     }
 
     /*

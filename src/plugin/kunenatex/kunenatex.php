@@ -23,50 +23,15 @@ class plgKunenaKunenatex extends CMSPlugin
     {
         parent::__construct($subject, $config);
 
-        // style to add button image
-	    Factory::getDocument()->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
-
-	    Factory::getDocument()->addScript("/media/plg_kunenatex/kunenatex.js");
-
 	    $url = $this->params->get('mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
-	    Factory::getDocument()->addScript($url, array(), array('id' => 'MathJax-script', 'async' => 'async'));
 
-	    // We need to add it in here already, because the BBcode parser is only loaded in a second request.
-	    Factory::getDocument()->addScript("/media/plg_kunenatex/katex.js");
-		 /*   ->addScriptDeclaration("
-		function kaTeXReady(fn) {
-            if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
-                fn();
-            } else {
-                document.addEventListener('DOMContentLoaded', fn);
-            }
-		};
-		
-		function katexPreview() {
-			var kbbcodepreview = document.getElementById('kbbcode-preview');
-			function mutationCallback(mutationsList, observer) {
-                for (const mutation of mutationsList) {
-                    if (mutation.type === 'attributes') {
-                        if (mutation.attributeName === 'style') {
-                            var styleAttribute = mutation.target.attributes.style.value;
-                            if (styleAttribute.includes('display: block')){
-                                MathJax.typesetClear([kbbcodepreview]);
-                                MathJax.typeset([kbbcodepreview]);
-                            }
-                        }
-                    }
-                }
-			}
-
-			// Create an observer instance linked to the callback function
-            const observer = new MutationObserver(mutationCallback);
-            // What to observe
-            const mutationConfig = { attributes: true, childList: true, subtree: true, characterData: true };
-            observer.observe(kbbcodepreview, mutationConfig);
-		};
-		
-		kaTeXReady(katexPreview);
-		");*/
+        // style to add button image
+	    Factory::getDocument()
+		    ->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }")
+		    ->addScript("/media/plg_kunenatex/kunenatex.js")
+		    ->addScript($url, array(), array('id' => 'MathJax-script', 'async' => 'async'))
+	        // We need to add it in here already, because the BBcode parser is only loaded in a second request.
+	        ->addScript("/media/plg_kunenatex/katex.js");
     }
 
     /*

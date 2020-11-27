@@ -77,11 +77,12 @@ class plgContentJatex extends CMSPlugin
             //TODO add Log entry on faile
         }
 
-        $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        $url = $this->params->get('mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
 
         Factory::getDocument()
         // Only (url, mime, defer, async) is depricated, we use only (url)
-	        ->addScript($url)
+            ->addScript("/media/plg_jatex/jatex.js")
+            ->addScript($url, array(), array('id' => 'MathJax-script', 'async' => 'async'))
 		    ->addScriptDeclaration("
 		    function jatex() {
 		        var elements = document.querySelectorAll('.latex');

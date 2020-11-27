@@ -15,9 +15,10 @@ function katexPreview() {
                     if (mutation.attributeName === 'style') {
                         var styleAttribute = mutation.target.attributes.style.value;
                         if (styleAttribute.includes('display: block')) {
-                            console.log("Display: block");
-                            MathJax.typesetClear([kbbcodepreview]);
-                            MathJax.typeset([kbbcodepreview]);
+                            setTimeout(function() {
+                                MathJax.typesetClear([kbbcodepreview]);
+                                MathJax.typesetPromise([kbbcodepreview]);
+                            }, 100);
                         }
                     }
                 }
@@ -27,7 +28,7 @@ function katexPreview() {
         // Create an observer instance linked to the callback function
         const observer = new MutationObserver(mutationCallback);
         // What to observe
-        const mutationConfig = {attributes: true, childList: true, subtree: true, characterData: true};
+        const mutationConfig = {attributes: true};
         observer.observe(kbbcodepreview, mutationConfig);
     }
 };

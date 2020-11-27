@@ -81,7 +81,7 @@ class plgContentJatex extends CMSPlugin
 
         Factory::getDocument()
         // Only (url, mime, defer, async) is depricated, we use only (url)
-            ->addScript("/media/plg_jatex/jatex.js")
+            ->addScript("/media/plg_jatex/js/jatex.js")
             ->addScript($url, array(), array('id' => 'MathJax-script', 'async' => 'async'))
 		    ->addScriptDeclaration("
 		    function jatex() {

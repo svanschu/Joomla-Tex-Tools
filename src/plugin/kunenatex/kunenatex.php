@@ -28,10 +28,10 @@ class plgKunenaKunenatex extends CMSPlugin
         // style to add button image
 	    Factory::getDocument()
 		    ->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }")
-		    ->addScript("/media/plg_kunenatex/kunenatex.js")
+		    ->addScript("/media/plg_kunenatex/js/kunenatex.js")
 		    ->addScript($url, array(), array('id' => 'MathJax-script', 'async' => 'async'))
 	        // We need to add it in here already, because the BBcode parser is only loaded in a second request.
-	        ->addScript("/media/plg_kunenatex/katex.js");
+	        ->addScript("/media/plg_kunenatex/js/katex.js");
     }
 
     /*

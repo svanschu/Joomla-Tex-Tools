@@ -17,7 +17,7 @@ function katexPreview() {
                         if (styleAttribute.includes('display: block')) {
                             setTimeout(function() {
                                 MathJax.typesetClear([kbbcodepreview]);
-                                MathJax.typesetPromise([kbbcodepreview]);
+                                MathJax.typeset([kbbcodepreview]);
                             }, 100);
                         }
                     }

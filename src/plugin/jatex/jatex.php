@@ -77,12 +77,29 @@ class plgContentJatex extends CMSPlugin
             //TODO add Log entry on faile
         }
 
-        $url = $this->params->get('mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js');
+	    $mathjaxSource           = "/media/plg_jatex/js/tex-mml-chtml.js";
+	    $mathjaxSourceAttributes = array('id' => 'MathJax-script');
 
-        Factory::getDocument()
-        // Only (url, mime, defer, async) is depricated, we use only (url)
-            ->addScript("/media/plg_jatex/js/jatex.js")
-            ->addScript($url, array(), array('id' => 'MathJax-script', 'async' => 'async'))
+	    if (strcmp($this->params->get('mathjaxcdn'), "cdn") == 0)
+	    {
+		    $defaultCdn              = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+		    $mathjaxSourceAttributes = array('id' => 'MathJax-script', 'async' => 'async');
+
+		    if (strcmp($this->params->get("mathjaxcdnsource"), "url") == 0)
+		    {
+			    $mathjaxSource = $this->params->get('mathjax', $defaultCdn);
+		    }
+		    else
+		    {
+			    $mathjaxSource = $defaultCdn;
+		    }
+	    }
+
+
+	    Factory::getDocument()
+		    // Only (url, mime, defer, async) is depricated, we use only (url)
+		    ->addScript("/media/plg_jatex/js/jatex.js")
+		    ->addScript($mathjaxSource, array(), $mathjaxSourceAttributes)
 		    ->addScriptDeclaration("
 		    function jatex() {
 		        var elements = document.querySelectorAll('.latex');

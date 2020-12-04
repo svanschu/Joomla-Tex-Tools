@@ -6,7 +6,7 @@
     - Build dir -Dbuilddir=./../../packages/swsetgroup
     - Sourcefiles -Dsrc=./..
 -->
-<project name="swsetgroup" default="build">
+<project name="joomlatextools" default="build">
     <property name="extension_name" value="JoomTexApps" />
     <!-- Version number of build -->
     <property name="build.version" value="0.0.0" override="true" />
@@ -68,6 +68,10 @@
         <copy todir="${builddir}/tmp/jatex/media">
             <fileset refid="jatexMedia" />
         </copy>
+        <delete file="${builddir}/tmp/jatex/media/plg_jatex/js/tex-mml-chtml.js" />
+        <delete file="${builddir}/tmp/katex/media/plg_kunenatex/js/tex-mml-chtml.js" />
+        <copy file="${media}/tex-mml-chtml.js" todir="${builddir}/tmp/jatex/media/plg_jatex/js" />
+        <copy file="${media}/tex-mml-chtml.js" todir="${builddir}/tmp/katex/media/plg_kunenatex/js" />
         <echo msg="Copy was successfull" />
         <!-- insert version, build number and date into the xml files -->
         <reflexive>

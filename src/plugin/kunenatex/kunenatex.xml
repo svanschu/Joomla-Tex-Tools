@@ -32,9 +32,25 @@
                     <option value="mimetex">MimeTex</option>
                     <option value="both">PLG_KUNENATEX_BOTH</option>
                 </field>
+                <field name="mathjaxcdn" type="radio" default="local" showon="usetexrender!:mimetex"
+                       label="PLG_KUNENATEX_USE_MATHJAX_CDN" description="PLG_KUNENATEX_USE_MATHJAX_CDN_DESC" class="radio btn-group">
+                    <option value="local">PLG_KUNENATEX_MATHJAX_LOCAL</option>
+                    <option value="cdn">CDN</option>
+                </field>
+                <field name="mathjaxinfo" type="note" label="PLG_KUNENATEX_MATHJAX_LOCAL_VERSION"
+                       showon="usetexrender!:mimetex[AND]mathjaxcdn:local"
+                       description="3.2.1" class="alert alert-info" />
+                <field name="mathjaxcdnsource" type="radio" default="default" showon="usetexrender!:mimetex[AND]mathjaxcdn:cdn"
+                       class="radio btn-group"
+                       label="PLG_KUNENATEX_MATHJAX_CDN_SOURCE" description="PLG_KUNENATEX_MATHJAX_CDN_SOURCE_DESC">
+                    <option value="default">PLG_KUNENATEX_MATHJAX_CDN_DEFAULT</option>
+                    <option value="url">PLG_KUNENATEX_MATHJAX_CDN_URL</option>
+                </field>
                 <field name="mathjax" type="text" default="" label="PLG_KUNENATEX_MATHJAX_URL"
+                       showon="usetexrender!:mimetex[AND]mathjaxcdn:cdn[AND]mathjaxcdnsource:url"
                        description="PLG_KUNENATEX_MATHJAX_URL_DESC"></field>
-                <field name="mimetex" type="text" default="" label="PLG_KUNENATEX_MIMETEX_URL"
+                <field name="mimetex" type="text" default="" showon="usetexrender!:mathjax"
+                       label="PLG_KUNENATEX_MIMETEX_URL"
                        description="PLG_KUNENATEX_MIMETEX_URL_DESC"></field>
             </fieldset>
         </fields>

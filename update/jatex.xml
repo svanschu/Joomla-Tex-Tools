@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
     <update>
-        <name><![CDATA[Joomla TeX Content Plugin]]></name>
-        <description><![CDATA[Joomla TeX Content Plugin]]></description>
-        <element>plg_jatex</element>
+        <name>Joomla TeX Content Plugin</name>
+        <description>Joomla TeX Content Plugin></description>
+        <element>jatex</element>
         <type>plugin</type>
         <version>1.4.0</version>
         <infourl title="SchuWeb JaTeX Plugin 1.4.0">https://extensions.schultschik.com/products/jatex/jatex-1-4-0</infourl>
@@ -13,17 +13,17 @@
         <tags>
             <tag>stable</tag>
         </tags>
-        <maintainer><![CDATA[Schultschik Websolution - Extension Directory]]></maintainer>
+        <maintainer>Schultschik Websolution - Extension Directory</maintainer>
         <maintainerurl>https://extensions.schultschik.com/</maintainerurl>
         <section>Updates</section>
-        <targetplatform name="joomla" version="3"/>
-        <client>0</client>
-        <folder></folder>
+        <targetplatform name="joomla" version="3.(9|10)"/>
+        <client>site</client>
+        <folder>content</folder>
     </update>
     <update>
-        <name><![CDATA[Joomla TeX Content Plugin]]></name>
-        <description><![CDATA[Joomla TeX Content Plugin]]></description>
-        <element>plg_jatex</element>
+        <name>Joomla TeX Content Plugin</name>
+        <description>Joomla TeX Content Plugin</description>
+        <element>jatex</element>
         <type>plugin</type>
         <version>1.3.0</version>
         <infourl title="SchuWeb JaTeX Plugin 1.3.0">https://extensions.schultschik.com/products/jatex/jatex-1-3-0</infourl>
@@ -33,11 +33,11 @@
         <tags>
             <tag>stable</tag>
         </tags>
-        <maintainer><![CDATA[Schultschik Websolution - Extension Directory]]></maintainer>
+        <maintainer>Schultschik Websolution - Extension Directory</maintainer>
         <maintainerurl>https://extensions.schultschik.com/</maintainerurl>
         <section>Updates</section>
-        <targetplatform name="joomla" version="3"/>
-        <client>0</client>
-        <folder></folder>
+        <targetplatform name="joomla" version="3.[6789]"/>
+        <client>site</client>
+        <folder>content</folder>
     </update>
 </updates>

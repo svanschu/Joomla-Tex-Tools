@@ -6,7 +6,7 @@
     - Build dir -Dbuilddir=./../../packages/swsetgroup
     - Sourcefiles -Dsrc=./..
 -->
-<project name="swsetgroup" default="build">
+<project name="joomlatextools" default="build">
     <property name="extension_name" value="JoomTexApps" />
     <!-- Version number of build -->
     <property name="build.version" value="0.0.0" override="true" />
@@ -15,15 +15,22 @@
     <!-- Set the directory where the packages should be saved. Relative to the build dir -->
     <property name="builddir" value="./../../packages/${extension_name}" override="true" />
     <!-- Declare Project src files -->
-    <property name="src" value="./.." override="true" />
+    <property name="src" value="./../src" override="true" />
     <property name="plugins" value="${src}/plugin" />
+    <property name="media" value="${src}/media" />
 
     <!-- plugins -->
     <fileset dir="${plugins}/kunenatex" id="katex">
         <include name="**" />
     </fileset>
+    <fileset dir="${media}" id="katexMedia">
+        <include name="plg_kunenatex/**" />
+    </fileset>
     <fileset dir="${plugins}/jatex" id="jatex">
         <include name="**" />
+    </fileset>
+    <fileset dir="${media}" id="jatexMedia">
+        <include name="plg_jatex/**" />
     </fileset>
 
     <target name="build" depends="prepare, copy">
@@ -42,8 +49,8 @@
     </target>
 
     <target name="prepare">
-        <mkdir dir="${builddir}/tmp/katex/" />
-        <mkdir dir="${builddir}/tmp/jatex/" />
+        <mkdir dir="${builddir}/tmp/katex/media" />
+        <mkdir dir="${builddir}/tmp/jatex/media" />
         <echo msg="Create temp folder OK!" />
     </target>
 
@@ -52,9 +59,19 @@
         <copy todir="${builddir}/tmp/katex">
             <fileset refid="katex" />
         </copy>
+        <copy todir="${builddir}/tmp/katex/media">
+            <fileset refid="katexMedia" />
+        </copy>
         <copy todir="${builddir}/tmp/jatex">
             <fileset refid="jatex" />
         </copy>
+        <copy todir="${builddir}/tmp/jatex/media">
+            <fileset refid="jatexMedia" />
+        </copy>
+        <delete file="${builddir}/tmp/jatex/media/plg_jatex/js/tex-mml-chtml.js" />
+        <delete file="${builddir}/tmp/katex/media/plg_kunenatex/js/tex-mml-chtml.js" />
+        <copy file="${media}/tex-mml-chtml.js" todir="${builddir}/tmp/jatex/media/plg_jatex/js" />
+        <copy file="${media}/tex-mml-chtml.js" todir="${builddir}/tmp/katex/media/plg_kunenatex/js" />
         <echo msg="Copy was successfull" />
         <!-- insert version, build number and date into the xml files -->
         <reflexive>

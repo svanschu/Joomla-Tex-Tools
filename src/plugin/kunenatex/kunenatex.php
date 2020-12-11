@@ -23,43 +23,31 @@ class plgKunenaKunenatex extends CMSPlugin
     {
         parent::__construct($subject, $config);
 
+	    $mathjaxSource           = "/media/plg_kunenatex/js/tex-mml-chtml.js";
+	    $mathjaxSourceAttributes = array('id' => 'MathJax-script');
+
+	    if (strcmp($this->params->get('mathjaxcdn'), "cdn") == 0)
+	    {
+		    $defaultCdn              = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+		    $mathjaxSourceAttributes = array('id' => 'MathJax-script', 'async' => 'async');
+
+		    if (strcmp($this->params->get("mathjaxcdnsource"), "url") == 0)
+		    {
+			    $mathjaxSource = $this->params->get('mathjax', $defaultCdn);
+		    }
+		    else
+		    {
+			    $mathjaxSource = $defaultCdn;
+		    }
+	    }
+
         // style to add button image
-	    Factory::getDocument()->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }");
-
-	    $url = $this->params->get('mathjax', 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
-	    Factory::getDocument()->addScript($url);
-
-	    // We need to add it in here already, because the BBcode parser is only loaded in a second request.
 	    Factory::getDocument()
-		    ->addScriptDeclaration("
-		function kaTeXReady(fn) {
-            if (document.attachEvent ? document.readyState === \"complete\" : document.readyState !== \"loading\"){
-                fn();
-            } else {
-                document.addEventListener('DOMContentLoaded', fn);
-            }
-		};
-		
-		function katexPreview() {
-			//var preview = document.getElementById('kbbcode-preview');
-			var previewClick = document.querySelectorAll(\"a[href='#preview']\");
-
-			Array.prototype.forEach.call(previewClick, function(item, index){
-				item.addEventListener('click', function(){
-					
-					MathJax.Hub.Queue(['Typeset',MathJax.Hub,'kbbcode-preview']);
-
-					var elements = document.querySelectorAll('.katex');
-			        Array.prototype.forEach.call(elements, function(item, index){
-						item.style.display = '';
-					});
-				});
-			});
-		};
-		
-		kaTeXReady(katexPreview);
-		
-		");
+		    ->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }")
+		    ->addScript("/media/plg_kunenatex/js/kunenatex.js")
+		    ->addScript($mathjaxSource, array(), $mathjaxSourceAttributes)
+	        // We need to add it in here already, because the BBcode parser is only loaded in a second request.
+	        ->addScript("/media/plg_kunenatex/js/katex.js");
     }
 
     /*

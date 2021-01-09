@@ -1,5 +1,10 @@
 # Joomla Tex Tools
 
+## Donation
+Want to support the project? 
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green)](https://paypal.me/SchuWeb?locale.x=de_DE)
+
 ## Feature missing?
 MathJax is a really huge framework with a lot of features. I implemented a basic setup, which worked for me. I don't implement, what nobody needs. So please write a feature request, if you need a missing feature and I will implement it.
 **Thank you!**

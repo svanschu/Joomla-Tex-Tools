@@ -21,6 +21,14 @@ class plgKunenaKunenatex extends CMSPlugin
 
     public function __construct(&$subject, $config)
     {
+	    // Do not load if Kunena version is not supported or Kunena is offline
+	    if (!(class_exists('KunenaForum') && KunenaForum::isCompatible('4.0') && KunenaForum::installed()))
+	    {
+		    return;
+	    }
+
+	    //ToDo only load if Kunena view is really viewed
+
         parent::__construct($subject, $config);
 
 	    $mathjaxSource           = "/media/plg_kunenatex/js/tex-mml-chtml.js";

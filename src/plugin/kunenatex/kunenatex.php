@@ -49,13 +49,26 @@ class plgKunenaKunenatex extends CMSPlugin
 		    }
 	    }
 
-        // style to add button image
 	    Factory::getDocument()
-		    ->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }")
-		    ->addScript("/media/plg_kunenatex/js/kunenatex.js")
-		    ->addScript($mathjaxSource, array(), $mathjaxSourceAttributes)
-	        // We need to add it in here already, because the BBcode parser is only loaded in a second request.
-	        ->addScript("/media/plg_kunenatex/js/katex.js");
+	        ->addScript("/media/plg_kunenatex/js/kunenatex.js");
+
+	    // if 5.2 or greater
+	    if (version_compare(KunenaForum::version(), "5.2.0", ">="))
+	    {
+		    Factory::getDocument()
+			    ->addScript("/media/plg_kunenatex/js/katexck.js");
+	    }
+	    else
+	    {
+		    // style to add button image
+		    Factory::getDocument()
+			    ->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }")
+			    // We need to add it in here already, because the BBcode parser is only loaded in a second request.
+			    ->addScript("/media/plg_kunenatex/js/katex.js");
+	    }
+
+	    Factory::getDocument()
+	        ->addScript($mathjaxSource, array(), $mathjaxSourceAttributes);
     }
 
     /*

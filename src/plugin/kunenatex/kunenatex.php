@@ -27,8 +27,6 @@ class plgKunenaKunenatex extends CMSPlugin
 		    return;
 	    }
 
-	    //ToDo only load if Kunena view is really viewed
-
         parent::__construct($subject, $config);
 
 	    $mathjaxSource           = "/media/plg_kunenatex/js/tex-mml-chtml.js";
@@ -55,8 +53,12 @@ class plgKunenaKunenatex extends CMSPlugin
 	    // if 5.2 or greater
 	    if (version_compare(KunenaForum::version(), "5.2.0", ">="))
 	    {
-		    Factory::getDocument()
-			    ->addScript("/media/plg_kunenatex/js/katexck.js");
+		    $layout = JFactory::getApplication()->input->get('layout');
+		    if (strcmp($layout, "create") == 0 || strcmp($layout, "reply") == 0 || strcmp($layout, "edit") == 0)
+		    {
+			    Factory::getDocument()
+				    ->addScript("/media/plg_kunenatex/js/katexck.js");
+		    }
 	    }
 	    else
 	    {

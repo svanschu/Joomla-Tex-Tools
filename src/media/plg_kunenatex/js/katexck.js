@@ -1,3 +1,15 @@
+/**
+ * @version $Id: $
+ * KaTeX Kunena TeX Plugin
+ *
+ * @package KaTeX
+ * @Copyright (C) 2012 - 2021 Sven Schultschik
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @link http://www.schultschik.de
+ */
+
+
+
 function kaTeXReady(fn) {
     if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
         fn();

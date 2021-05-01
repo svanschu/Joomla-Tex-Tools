@@ -9,6 +9,7 @@
  */
 
 CKEDITOR.dialog.add('katexDialog', function (editor) {
+        let prevelem;
         return {
             title: 'LaTeX Code',
             minWidth: 400,
@@ -23,27 +24,58 @@ CKEDITOR.dialog.add('katexDialog', function (editor) {
                             type: 'textarea',
                             id: 'katex',
                             label: 'LaTeX Code',
-                            validate: CKEDITOR.dialog.validate.notEmpty("LaTeX code field cannot be empty.")
-                        }
-                    ]
-                },
-                {
-                    id: 'tab-adv',
-                    label: 'Advanced',
-                    elements: [
+                            validate: CKEDITOR.dialog.validate.notEmpty("LaTeX code field cannot be empty."),
+
+                            onLoad: function () {
+                                const inputElement = this.getInputElement();
+                                this.getInputElement().on('keyup', function () {
+                                    MathJax.texReset(prevelem);
+                                    MathJax.typesetClear(prevelem);
+                                    let equation = inputElement.getValue().trim();
+                                    if (!(equation.startsWith('$') || equation.startsWith('\\('))) {
+                                        equation = '$'.concat(equation);
+                                    }
+                                    if (!(equation.endsWith('$') || equation.endsWith('\\)'))) {
+                                        equation = equation.concat('$');
+                                    }
+                                    prevelem.innerHTML = equation;
+                                    MathJax.typesetPromise()
+                                        .catch(function (err) {
+                                            prevelem.innerHTML = '';
+                                            prevelem.appendChild(document.createElement('pre')).appendChild(document.createTextNode(err.message));
+                                        })
+                                })
+                            },
+                        },
                         {
-                            type: 'text',
-                            id: 'katex-inline',
-                            label: 'Inline',
+                            type: 'html',
+                            id: 'preview',
+                            html: '<div id="dia-preview" style="width:100%;text-align:center;"></div>',
+
+                            onLoad: function () {
+                                prevelem = document.getElementById('dia-preview');
+                                prevelem.innerHTML = '';
+                            },
+                            onHide: function () {
+                                prevelem.innerHTML = '';
+                                MathJax.texReset(prevelem);
+                                MathJax.typesetClear(prevelem);
+                            }
                         }
                     ]
                 }],
             onOk: function () {
-                var dialog = this;
+                let dialog = this;
+                const katex = editor.document.createElement('katex');
 
-                var katex = editor.document.createElement('katex');
-                //katex.setAttribute('katex', dialog.getValueOf('tab-basic', 'katex'));
-                katex.setText("$$" + dialog.getValueOf('tab-basic', 'katex') + "$$");
+                let equation = dialog.getValueOf('tab-basic', 'katex');
+                if (!(equation.startsWith('$') || equation.startsWith('\\('))) {
+                    equation = '$'.concat(equation);
+                }
+                if (!(equation.endsWith('$') || equation.endsWith('\\)'))) {
+                    equation = equation.concat('$');
+                }
+                katex.setText(equation);
 
                 editor.insertElement(katex);
             }

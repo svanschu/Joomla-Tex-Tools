@@ -77,7 +77,7 @@ class plgContentJatex extends CMSPlugin
             //TODO add Log entry on faile
         }
 
-	    $mathjaxSource           = "/media/plg_jatex/js/tex-mml-chtml.js";
+	    $mathjaxSource           = JUri::base() . "media/plg_jatex/js/tex-mml-chtml.js";
 	    $mathjaxSourceAttributes = array('id' => 'MathJax-script');
 
 	    if (strcmp($this->params->get('mathjaxcdn'), "cdn") == 0)
@@ -98,7 +98,7 @@ class plgContentJatex extends CMSPlugin
 
 	    Factory::getDocument()
 		    // Only (url, mime, defer, async) is depricated, we use only (url)
-		    ->addScript("/media/plg_jatex/js/jatex.js")
+		    ->addScript(JUri::base() . "media/plg_jatex/js/jatex.js")
 		    ->addScript($mathjaxSource, array(), $mathjaxSourceAttributes)
 		    ->addScriptDeclaration("
 		    function jatex() {

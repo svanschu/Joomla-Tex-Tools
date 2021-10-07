@@ -23,7 +23,7 @@ class plgKunenaKunenatex extends CMSPlugin
     {
         parent::__construct($subject, $config);
 
-	    $mathjaxSource           = "/media/plg_kunenatex/js/tex-mml-chtml.js";
+	    $mathjaxSource           = "/media/plg_kunenatex/js/mathjax/tex-mml-chtml.js";
 	    $mathjaxSourceAttributes = array('id' => 'MathJax-script');
 
 	    if (strcmp($this->params->get('mathjaxcdn'), "cdn") == 0)

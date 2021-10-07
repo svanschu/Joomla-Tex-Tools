@@ -77,7 +77,7 @@ class plgContentJatex extends CMSPlugin
             //TODO add Log entry on faile
         }
 
-	    $mathjaxSource           = JUri::base() . "media/plg_jatex/js/tex-mml-chtml.js";
+	    $mathjaxSource           = JUri::base() . "media/plg_jatex/js/mathjax/tex-mml-chtml.js";
 	    $mathjaxSourceAttributes = array('id' => 'MathJax-script');
 
 	    if (strcmp($this->params->get('mathjaxcdn'), "cdn") == 0)

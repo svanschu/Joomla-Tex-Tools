@@ -42,6 +42,7 @@ class plgKunenaKunenatex extends CMSPlugin
 	    }
 
         // style to add button image
+	    /** @noinspection PhpDeprecationInspection */
 	    Factory::getDocument()
 		    ->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }")
 		    ->addScript("/media/plg_kunenatex/js/kunenatex.js")

@@ -96,6 +96,7 @@ class plgContentJatex extends CMSPlugin
 	    }
 
 
+	    /** @noinspection PhpDeprecationInspection */
 	    Factory::getDocument()
 		    // Only (url, mime, defer, async) is depricated, we use only (url)
 		    ->addScript(JUri::base() . "media/plg_jatex/js/jatex.js")

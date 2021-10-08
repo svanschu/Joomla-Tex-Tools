@@ -68,10 +68,18 @@
         <copy todir="${builddir}/tmp/jatex/media">
             <fileset refid="jatexMedia" />
         </copy>
-        <delete file="${builddir}/tmp/jatex/media/plg_jatex/js/tex-mml-chtml.js" />
-        <delete file="${builddir}/tmp/katex/media/plg_kunenatex/js/tex-mml-chtml.js" />
-        <copy file="${media}/tex-mml-chtml.js" todir="${builddir}/tmp/jatex/media/plg_jatex/js" />
-        <copy file="${media}/tex-mml-chtml.js" todir="${builddir}/tmp/katex/media/plg_kunenatex/js" />
+        <delete file="${builddir}/tmp/jatex/media/plg_jatex/js/mathjax" />
+        <delete file="${builddir}/tmp/katex/media/plg_kunenatex/js/mathjax" />
+        <copy todir="${builddir}/tmp/jatex/media/plg_jatex/js/mathjax" >
+                <fileset dir="${media}/mathjax">
+                    <include name="**"/>
+                </fileset>
+        </copy>
+        <copy todir="${builddir}/tmp/katex/media/plg_kunenatex/js/mathjax" >
+            <fileset dir="${media}/mathjax">
+                <include name="**"/>
+            </fileset>
+        </copy>
         <echo msg="Copy was successfull" />
         <!-- insert version, build number and date into the xml files -->
         <reflexive>

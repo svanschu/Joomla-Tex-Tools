@@ -23,7 +23,7 @@ class plgKunenaKunenatex extends CMSPlugin
     {
         parent::__construct($subject, $config);
 
-	    $mathjaxSource           = "/media/plg_kunenatex/js/tex-mml-chtml.js";
+	    $mathjaxSource           = "/media/plg_kunenatex/js/mathjax/tex-mml-chtml.js";
 	    $mathjaxSourceAttributes = array('id' => 'MathJax-script');
 
 	    if (strcmp($this->params->get('mathjaxcdn'), "cdn") == 0)
@@ -42,6 +42,7 @@ class plgKunenaKunenatex extends CMSPlugin
 	    }
 
         // style to add button image
+	    /** @noinspection PhpDeprecationInspection */
 	    Factory::getDocument()
 		    ->addStyleDeclaration(".markItUpHeader .texbutton a { background-image: url(\"" . JURI::base(true) . "/plugins/kunena/kunenatex/images/tex.png\"); }")
 		    ->addScript("/media/plg_kunenatex/js/kunenatex.js")
@@ -67,32 +68,37 @@ class plgKunenaKunenatex extends CMSPlugin
      */
     public function onKunenaBbcodeConstruct($bbcode)
     {
-        $bbcode->AddRule('tex', array(
-                'mode' => BBCODE_MODE_CALLBACK,
-                'method' => 'plgKunenaKunenatex::onTex',
-                'allow' => array('type' => '/^[\w]*$/',),
-                'allow_in' => array('listitem', 'block', 'columns'),
-                'content' => BBCODE_VERBATIM,
-                'before_tag' => "sns",
-                'after_tag' => "sn",
-                'before_endtag' => "sn",
-                'after_endtag' => "sns",
-                'plain_start' => "\n",
-                'plain_end' => "\n")
-        );
+	    // if less 5.2
+	    if (version_compare(KunenaForum::version(), "5.2.0", "<"))
+	    {
+		    $bbcode->AddRule('tex', array(
+				    'mode'          => BBCODE_MODE_CALLBACK,
+				    'method'        => 'plgKunenaKunenatex::onTex',
+				    'allow'         => array('type' => '/^[\w]*$/',),
+				    'allow_in'      => array('listitem', 'block', 'columns'),
+				    'content'       => BBCODE_VERBATIM,
+				    'before_tag'    => "sns",
+				    'after_tag'     => "sn",
+				    'before_endtag' => "sn",
+				    'after_endtag'  => "sns",
+				    'plain_start'   => "\n",
+				    'plain_end'     => "\n")
+		    );
 
-        if (!(KunenaFactory::getTemplate()->isHmvc())) {
-	        Factory::getDocument()->addScriptDeclaration("
-            function katexbBBCodeConstruct() {
-                var elements = document.querySelectorAll('.katex');
-                Array.prototype.forEach.call(elements, function(item, index){
-                    item.style.display = '';
-                });
-            };
-            
-            kaTeXReady(katexbBBCodeConstruct);
-            ");
-        }
+
+	        if (!(KunenaFactory::getTemplate()->isHmvc())) {
+		        Factory::getDocument()->addScriptDeclaration("
+	            function katexbBBCodeConstruct() {
+	                var elements = document.querySelectorAll('.katex');
+	                Array.prototype.forEach.call(elements, function(item, index){
+	                    item.style.display = '';
+	                });
+	            };
+	            
+	            kaTeXReady(katexbBBCodeConstruct);
+	            ");
+	        }
+	    }
 
         return true;
     }

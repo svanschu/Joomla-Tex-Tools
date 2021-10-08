@@ -36,7 +36,7 @@
                 </field>
                 <field name="mathjaxinfo" type="note" label="PLG_JATEX_MATHJAX_LOCAL_VERSION"
                        showon="usetexrender!:mimetex[AND]mathjaxcdn:local"
-                       description="3.2.1" class="alert alert-info" />
+                       description="3.2.0" class="alert alert-info" />
                 <field name="mathjaxcdnsource" type="radio" default="default" showon="usetexrender!:mimetex[AND]mathjaxcdn:cdn"
                        class="radio btn-group"
                        label="PLG_JATEX_MATHJAX_CDN_SOURCE" description="PLG_JATEX_MATHJAX_CDN_SOURCE_DESC">

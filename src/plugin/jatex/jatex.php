@@ -1,12 +1,12 @@
 <?php
 /**
- * @version $Id: $
- * JaTeX content Plugin
- *
- * @package        JaTeX
- * @Copyright (C) 2014 - 2019 Sven Schultschik
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @link http://extensions.schultschik.com
+ * JaTeX content plugin
+ * 
+ * @version     sw.build.version
+ * @copyright   Copyright (C) 2014 - 2024 Sven Schultschik. All rights reserved
+ * @license     GPL-3.0-or-later
+ * @author      Sven Schultschik (extensions@schultschik.de)
+ * @link        extensions.schultschik.de
  */
 
 // No direct access
@@ -15,6 +15,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 class plgContentJatex extends CMSPlugin
 {
@@ -51,17 +52,10 @@ class plgContentJatex extends CMSPlugin
             }
         }
 
-        $content_urlencoded = rawurlencode(html_entity_decode($treffer[2]));
         $html = '';
         $style = '';
-        if ($pconf->usetexrender == 'both') $style = "style=\"display: none\"";
         if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
             $html .= "<div class=\"latex {$class}\" {$style}>\[" . $treffer[2] . "\]</div>";
-        }
-        if ((isset($url) && ($pconf->usetexrender == 'mimetex') || $pconf->usetexrender == 'both')) {
-            if ($pconf->usetexrender == 'both') $html .= "<noscript>";
-            $html .= "<img src=\"$url?$content_urlencoded\" alt=\"{$treffer[2]}\" title=\"{$treffer[2]}\"/><br />";
-            if ($pconf->usetexrender == 'both') $html .= "</noscript>";
         }
 
         return $html;
@@ -77,7 +71,7 @@ class plgContentJatex extends CMSPlugin
             //TODO add Log entry on faile
         }
 
-	    $mathjaxSource           = JUri::base() . "media/plg_jatex/js/mathjax/tex-mml-chtml.js";
+	    $mathjaxSource           = Uri::base() . "media/plg_jatex/js/mathjax/tex-mml-chtml.js";
 	    $mathjaxSourceAttributes = array('id' => 'MathJax-script');
 
 	    if (strcmp($this->params->get('mathjaxcdn'), "cdn") == 0)
@@ -95,11 +89,9 @@ class plgContentJatex extends CMSPlugin
 		    }
 	    }
 
-
-	    /** @noinspection PhpDeprecationInspection */
 	    Factory::getDocument()
 		    // Only (url, mime, defer, async) is depricated, we use only (url)
-		    ->addScript(JUri::base() . "media/plg_jatex/js/jatex.js")
+		    ->addScript(Uri::base() . "media/plg_jatex/js/jatex.js")
 		    ->addScript($mathjaxSource, array(), $mathjaxSourceAttributes)
 		    ->addScriptDeclaration("
 		    function jatex() {

@@ -50,6 +50,7 @@
             </fieldset>
         </fields>
     </config>
+    <changelogurl>https://raw.githubusercontent.com/svanschu/Joomla-Tex-Tools/main/changelog_jatex.xml</changelogurl>
     <updateservers>
         <server type="extension" priority="2" name="JaTeX updates">https://github.com/svanschu/Joomla-Tex-Tools/raw/main/update_jatex.xml</server>
     </updateservers>

@@ -1,0 +1,20 @@
+<changelogs>
+    <changelog>
+        <element>jatex</element>
+        <type>plugin</type>
+        <version>2.0.0</version>
+        <fix>
+        </fix>
+        <addition>
+            <item>add changelog</item>
+        </addition>
+        <change>
+            <item>rework to J4 and J5 extension structure</item>
+        </change>
+        <remove>
+            <item>remove mimetek</item>
+        </remove>
+        <note>
+        </note>
+    </changelog>
+</changelogs>

@@ -9,16 +9,32 @@
  * @link        extensions.schultschik.de
  */
 
+namespace SchuWeb\Plugin\Content\JaTeX\Extension;
+
 // No direct access
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\Event;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Event\SubscriberInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
-class plgContentJatex extends CMSPlugin
+class JaTeX extends CMSPlugin implements SubscriberInterface
 {
+    /**
+     * 
+     * 
+     * @since 2.0.0
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onContentPrepare' => 'replaceShortcodes',
+        ];
+    }
+
     protected $pconf = null;
 
     public function __construct(&$subject, $config)
@@ -27,12 +43,15 @@ class plgContentJatex extends CMSPlugin
         $this->loadLanguage();
     }
 
+    /**
+     * Callback method to convert the latex code
+     * 
+     * @since 1.0.0
+     */
     static function convertLatex($treffer)
     {
         $pconf = PluginHelper::getPlugin('content', 'jatex');
         $pconf = json_decode($pconf->params);
-        //get the mimetex URL
-        $url = $pconf->mimetex;
 
         $class = '';
         if (!empty($treffer[1])) {
@@ -61,12 +80,23 @@ class plgContentJatex extends CMSPlugin
         return $html;
     }
 
-    public function onContentPrepare($context, &$row, &$params, $page = 0)
-    {
-        $text = preg_replace_callback("/\{jatex(?: options:)??(.*)\}((?:.|\n)*)\{\/jatex\}/U", array('plgContentJatex', 'convertLatex'), $row->text);
+    /**
+     * this will be called whenever the onContentPrepare event is triggered
+     * 
+     * @since 2.0.0
+     */
+    public function replaceShortcodes(Event $event){
+        if (!$this->getApplication()->isClient('site')) {
+            return;
+        }
+
+        [$context, $article, $params, $page] = array_values($event->getArguments());
+        if ($context !== "com_content.article" && $context !== "com_content.featured" && $context !== "com_content.category") return;
+
+        $text = preg_replace_callback("/\{jatex(?: options:)??(.*)\}((?:.|\n)*)\{\/jatex\}/U", ['SchuWeb\Plugin\Content\JaTeX\Extension\JaTeX', 'convertLatex'], $article->text);
 
         if ($text != NULL) {
-            $row->text = $text;
+            $article->text = $text;
         } else {
             //TODO add Log entry on faile
         }

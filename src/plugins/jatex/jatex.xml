@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="content" method="upgrade">
-    <name>plg_jatex</name>
+<extension type="plugin" group="content" method="upgrade">
+    <name>PLG_CONTENT_JATEX</name>
     <author>Sven Schultschik</author>
     <creationDate>sw.build.date</creationDate>
-    <copyright>Copyright (C) 2014 - 2019 Sven Schultschik.</copyright>
+    <copyright>Copyright (C) 2014 - 2024 Sven Schultschik.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>admin@schultschik.de</authorEmail>
     <authorUrl>extensions.schultschik.com</authorUrl>
     <version>sw.build.version</version>
-    <description>PLG_JATEX_DESC</description>
+    <description>PLG_CONTENT_JATEX_DESC</description>
+    <namespace path="src">SchuWeb\Plugin\Content\JaTeX</namespace>
     <files>
-        <filename plugin="jatex">jatex.php</filename>
-        <filename>index.html</filename>
+        <folder plugin="jatex">services</folder>
+        <folder>src</folder>
     </files>
     <media folder="media/plg_jatex" destination="plg_jatex">
         <folder>js</folder>
     </media>
     <languages folder="language">
-        <language tag="en-GB">en-GB/en-GB.plg_content_jatex.ini</language>
-        <language tag="en-GB">en-GB/en-GB.plg_content_jatex.sys.ini</language>
+        <language tag="en-GB">en-GB/plg_content_jatex.ini</language>
+        <language tag="en-GB">en-GB/plg_content_jatex.sys.ini</language>
     </languages>
     <config>
         <fields name="params">
@@ -50,6 +51,6 @@
         </fields>
     </config>
     <updateservers>
-        <server type="extension" priority="2" name="SchuWeb JaTeX updates">https://github.com/svanschu/Joomla-Tex-Tools/raw/master/update/jatex.xml</server>
+        <server type="extension" priority="2" name="JaTeX updates">https://github.com/svanschu/Joomla-Tex-Tools/raw/master/update/jatex.xml</server>
     </updateservers>
 </extension>

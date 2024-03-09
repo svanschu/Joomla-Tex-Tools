@@ -11,11 +11,13 @@
     <!-- Version number of build -->
     <property name="build.version" value="0.0.0" override="true" />
     <!-- get the date for build -->
-    <tstamp prefix="build.date" />
+    <tstamp prefix="build.date">
+        <format property = "XMLDATE" pattern = "%Y-%m-%d" />
+    </tstamp>
     <!-- Set the directory where the packages should be saved. Relative to the build dir -->
-    <property name="builddir" value="./../../packages/${extension_name}" override="true" />
+    <property name="builddir" value="./../packages/${extension_name}" override="true" />
     <!-- Declare Project src files -->
-    <property name="src" value="./../src" override="true" />
+    <property name="src" value="./src" override="true" />
     <property name="plugins" value="${src}/plugins" />
     <property name="media" value="${src}/media" />
 
@@ -89,7 +91,7 @@
             <filterchain>
                 <replaceregexp>
                     <regexp pattern="sw\.build\.version" replace="${build.version}" />
-                    <regexp pattern="sw\.build\.date" replace="${build.date.DSTAMP}" />
+                    <regexp pattern="sw\.build\.date" replace="${build.date.XMLDATE}" />
                 </replaceregexp>
             </filterchain>
         </reflexive>

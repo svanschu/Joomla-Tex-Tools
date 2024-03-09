@@ -51,6 +51,6 @@
         </fields>
     </config>
     <updateservers>
-        <server type="extension" priority="2" name="JaTeX updates">https://github.com/svanschu/Joomla-Tex-Tools/raw/master/update/jatex.xml</server>
+        <server type="extension" priority="2" name="JaTeX updates">https://github.com/svanschu/Joomla-Tex-Tools/raw/main/update_jatex.xml</server>
     </updateservers>
 </extension>

@@ -11,6 +11,9 @@
 
 namespace SchuWeb\Plugin\Content\JaTeX\Extension;
 
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // No direct access
 defined('_JEXEC') or die;
 
@@ -73,8 +76,21 @@ class JaTeX extends CMSPlugin implements SubscriberInterface
 
         $html = '';
         $style = '';
-        if ($pconf->usetexrender == 'mathjax' || $pconf->usetexrender == 'both') {
+        if ($pconf->usetexrender == 'mathjax') {
             $html .= "<div class=\"latex {$class}\" {$style}>\[" . $treffer[2] . "\]</div>";
+        }
+
+        if ($pconf->usetexrender == 'katex') {
+            $html .= "<div class=\"jatex {$class}\" {$style}>
+                " . $treffer[2] . "
+            </div>";
+
+            // $script = "katex.render(\"$treffer[2]\", element, { throwOnError: false});";
+
+            // $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+
+            // $wa->addInlineScript($script);
+
         }
 
         return $html;
@@ -85,15 +101,21 @@ class JaTeX extends CMSPlugin implements SubscriberInterface
      * 
      * @since 2.0.0
      */
-    public function replaceShortcodes(Event $event){
-        if (!$this->getApplication()->isClient('site')) {
+    public function replaceShortcodes(Event $event): void{
+        if (!$this->getApplication()->isClient(identifier: 'site')) {
             return;
         }
 
-        [$context, $article, $params, $page] = array_values($event->getArguments());
-        if ($context !== "com_content.article" && $context !== "com_content.featured" && $context !== "com_content.category") return;
+        [$context, $article, $params, $page] = array_values(array: $event->getArguments());
 
-        $text = preg_replace_callback("/\{jatex(?: options:)??(.*)\}((?:.|\n)*)\{\/jatex\}/U", ['SchuWeb\Plugin\Content\JaTeX\Extension\JaTeX', 'convertLatex'], $article->text);
+        if ($context !== "com_content.article" 
+            && $context !== "com_content.featured" 
+            && $context !== "com_content.category") return;
+
+        $text = preg_replace_callback(
+            pattern: "/\{jatex(?: options:)??(.*)\}((?:.|\n)*)\{\/jatex\}/U", 
+            callback: ['SchuWeb\Plugin\Content\JaTeX\Extension\JaTeX', 'convertLatex'], 
+            subject: $article->text);
 
         if ($text != NULL) {
             $article->text = $text;
@@ -101,29 +123,42 @@ class JaTeX extends CMSPlugin implements SubscriberInterface
             //TODO add Log entry on faile
         }
 
-	    $mathjaxSource           = Uri::base() . "media/plg_jatex/js/mathjax/tex-mml-chtml.js";
-	    $mathjaxSourceAttributes = array('id' => 'MathJax-script');
+        switch ($this->params->get('usetexrender')) {
+            case 'mathjax':
+                $this->replaceShortcodesMathjax();
+                break;
+            case 'katex':
+                $this->replaceShortcodesKatex();
+                break;
+        }
+    }
 
-	    if (strcmp($this->params->get('mathjaxcdn'), "cdn") == 0)
-	    {
-		    $defaultCdn              = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
-		    $mathjaxSourceAttributes = array('id' => 'MathJax-script', 'async' => 'async');
+    /**
+     * this will be called whenever the onContentPrepare event is triggered
+     * 
+     * @since __BUMP_VERSION__
+     */
+    private function replaceShortcodesMathjax()
+    {
+        $mathjaxSource           = Uri::base() . "media/plg_jatex/js/mathjax/tex-mml-chtml.js";
+        $mathjaxSourceAttributes = array('id' => 'MathJax-script');
 
-		    if (strcmp($this->params->get("mathjaxcdnsource"), "url") == 0)
-		    {
-			    $mathjaxSource = $this->params->get('mathjax', $defaultCdn);
-		    }
-		    else
-		    {
-			    $mathjaxSource = $defaultCdn;
-		    }
-	    }
+        if (strcmp($this->params->get('mathjaxcdn'), "cdn") == 0) {
+            $defaultCdn              = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+            $mathjaxSourceAttributes = array('id' => 'MathJax-script', 'async' => 'async');
 
-	    Factory::getDocument()
-		    // Only (url, mime, defer, async) is depricated, we use only (url)
-		    ->addScript(Uri::base() . "media/plg_jatex/js/jatex.js")
-		    ->addScript($mathjaxSource, array(), $mathjaxSourceAttributes)
-		    ->addScriptDeclaration("
+            if (strcmp($this->params->get("mathjaxcdnsource"), "url") == 0) {
+                $mathjaxSource = $this->params->get('mathjax', $defaultCdn);
+            } else {
+                $mathjaxSource = $defaultCdn;
+            }
+        }
+
+        Factory::getDocument()
+            // Only (url, mime, defer, async) is depricated, we use only (url)
+            ->addScript(Uri::base() . "media/plg_jatex/js/jatex.js")
+            ->addScript($mathjaxSource, array(), $mathjaxSourceAttributes)
+            ->addScriptDeclaration("
 		    function jatex() {
 		        var elements = document.querySelectorAll('.latex');
 		        Array.prototype.forEach.call(elements, function(item, index){
@@ -141,8 +176,62 @@ class JaTeX extends CMSPlugin implements SubscriberInterface
 			
 			ready(jatex);
 			"
-		    );
+            );
+    }
 
-        return true;
+    /**
+     * this will be called whenever the onContentPrepare event is triggered
+     * 
+     * @since __BUMP_VERSION__
+     */
+    private function replaceShortcodesKatex()
+    {
+        $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+
+        $cdn_local = $this->params->get('katexcdn');
+        if (strcmp($cdn_local, "local") == 0) {
+            $wa->useScript('plg_jatex.katex.js')
+                ->useStyle('plg_jatex.katex.css');
+        } else if (strcmp($cdn_local, "cdn") == 0) {
+            $cdn_uri = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/';
+
+            $wa->registerAndUseStyle('plg_jatex.katex.css.cdn', 
+                uri: "{$cdn_uri}katex.min.css",
+                attributes: [ 
+                    'crossorigin' => 'anonymous',
+                    'integrity' => 'sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+'
+                ]
+            )
+            ->registerAndUseScript('plg_jatex.katex.js.cdn', 
+                uri: "{$cdn_uri}katex.min.js",
+                attributes: [ 
+                    'crossorigin' => 'anonymous',
+                    'integrity' => 'sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg'
+                ]
+            )
+            // ->registerAndUseScript('plg_jatex.auto-render.js.cdn', 
+            //     uri: "{$cdn_uri}contrib/auto-render.min.js",
+            //     attributes: [ 
+            //         'crossorigin' => 'anonymous',
+            //         'integrity' => 'sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk',
+            //         'onload'=>'renderMathInElement(document.body);'
+            //     ]
+            // )
+            ;
+// TODO        <script>
+//   window.WebFontConfig = {
+//     custom: {
+//       families: ['KaTeX_AMS', 'KaTeX_Caligraphic:n4,n7', 'KaTeX_Fraktur:n4,n7',
+//         'KaTeX_Main:n4,n7,i4,i7', 'KaTeX_Math:i4,i7', 'KaTeX_Script',
+//         'KaTeX_SansSerif:n4,n7,i4', 'KaTeX_Size1', 'KaTeX_Size2', 'KaTeX_Size3',
+//         'KaTeX_Size4', 'KaTeX_Typewriter'],
+//     },
+//   };
+// </script>
+// <script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script>
+
+        }
+
+        $wa->useScript('plg_jatex.katexdo.js');
     }
 }

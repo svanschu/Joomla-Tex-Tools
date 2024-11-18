@@ -1,0 +1,25 @@
+{
+    "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+    "name": "plg_jatex",
+    "version": "__BUMP_VERSION__",
+    "description": "SchuWeb TeX Tools",
+    "license": "GPL-2.0-or-later",
+    "assets": [
+      {
+        "name": "plg_jatex.katex.js",
+        "type": "script",
+        "uri": "plg_jatex/katex.min.js"
+      },
+      {
+        "name": "plg_jatex.katex.css",
+        "type": "style",
+        "uri": "plg_jatex/katex.min.css"
+      },
+      {
+        "name": "plg_jatex.katexdo.js",
+        "type": "script",
+        "uri": "plg_jatex/katexdo.js" 
+      }
+    ]
+  }
+  

@@ -15,6 +15,8 @@
         <folder>src</folder>
     </files>
     <media folder="media/plg_jatex" destination="plg_jatex">
+        <folder>css</folder>
+        <folder>fonts</folder>
         <folder>js</folder>
     </media>
     <languages folder="language">
@@ -27,26 +29,50 @@
                 <field name="usetexrender" type="radio" default="mathjax" label="PLG_JATEX_USETEXRENDER"
                        description="PLG_JATEX_USETEXRENDER_DESC" class="radio btn-group">
                     <option value="mathjax">MathJax</option>
+                    <option value="katex">KaTeX</option>
                 </field>
-                <field name="mathjaxcdn" type="radio" default="local" showon="usetexrender!:mimetex"
-                       label="PLG_JATEX_USE_MATHJAX_CDN" description="PLG_JATEX_USE_MATHJAX_CDN_DESC" class="radio btn-group">
-                    <option value="local">PLG_JATEX_MATHJAX_LOCAL</option>
+                <field 
+                    name="mathjaxcdn" 
+                    type="radio" 
+                    default="local" 
+                    showon="usetexrender:mathjax" 
+                    label="PLG_JATEX_USE_LOCAL_CDN" 
+                    description="PLG_JATEX_USE_LOCAL_CDN_DESC" 
+                    class="radio btn-group">
+                    <option value="local">PLG_JATEX_LOCAL</option>
                     <option value="cdn">CDN</option>
                 </field>
                 <field name="mathjaxinfo" type="note" label="PLG_JATEX_MATHJAX_LOCAL_VERSION"
-                       showon="usetexrender!:mimetex[AND]mathjaxcdn:local"
+                       showon="usetexrender:mathjax[AND]mathjaxcdn:local"
                        description="3.2.2" class="alert alert-info" />
-                <field name="mathjaxcdnsource" type="radio" default="default" showon="usetexrender!:mimetex[AND]mathjaxcdn:cdn"
+                <field name="mathjaxcdnsource" type="radio" default="default" 
+                    showon="usetexrender:mathjax[AND]mathjaxcdn:cdn"
                        class="radio btn-group"
-                       label="PLG_JATEX_MATHJAX_CDN_SOURCE" description="PLG_JATEX_MATHJAX_CDN_SOURCE_DESC">
-                    <option value="default">PLG_JATEX_MATHJAX_CDN_DEFAULT</option>
-                    <option value="url">PLG_JATEX_MATHJAX_CDN_URL</option>
+                       label="PLG_JATEX_CDN_SOURCE" description="PLG_JATEX_CDN_SOURCE_DESC">
+                    <option value="default">PLG_JATEX_CDN_DEFAULT</option>
+                    <option value="url">PLG_JATEX_CDN_URL</option>
                 </field>
-                <field name="mathjax" type="text" default="" showon="usetexrender!:mimetex[AND]mathjaxcdn:cdn[AND]mathjaxcdnsource:url"
+                <field name="mathjax" type="text" default="" showon="usetexrender:mathjax[AND]mathjaxcdn:cdn[AND]mathjaxcdnsource:url"
                        label="PLG_JATEX_MATHJAX_URL"
                        description="PLG_JATEX_MATHJAX_URL_DESC"></field>
-                <field name="mimetex" type="text" default="" showon="usetexrender!:mathjax"
-                       label="PLG_JATEX_MIMETEX_URL" description="PLG_JATEX_MIMETEX_URL_DESC"></field>
+                <field 
+                    name="katexcdn" 
+                    type="radio" 
+                    default="local" 
+                    showon="usetexrender:katex" 
+                    label="PLG_JATEX_USE_LOCAL_CDN" 
+                    description="PLG_JATEX_USE_LOCAL_CDN_DESC" 
+                    class="radio btn-group">
+                    <option value="local">PLG_JATEX_LOCAL</option>
+                    <option value="cdn">CDN</option>
+                </field>
+                <field
+                    name="katexinfo"
+                    type="note"
+                    label="PLG_JATEX_KATEX_LOCAL_VERSION"
+                    showon="usetexrender:katex[AND]katexcdn:local"
+                    description="0.16.11"
+                    class="alert alert-info" />
             </fieldset>
         </fields>
     </config>

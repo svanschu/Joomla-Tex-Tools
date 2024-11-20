@@ -16,7 +16,6 @@
     </files>
     <media folder="media/plg_jatex" destination="plg_jatex">
         <folder>css</folder>
-        <folder>fonts</folder>
         <folder>js</folder>
         <filename>joomla.asset.json</filename>
     </media>

@@ -11,9 +11,6 @@
 
 namespace SchuWeb\Plugin\Content\JaTeX\Extension;
 
-use Joomla\CMS\Filter\InputFilter;
-use Joomla\CMS\HTML\HTMLHelper;
-
 // No direct access
 defined('_JEXEC') or die;
 
@@ -68,28 +65,22 @@ class JaTeX extends CMSPlugin implements SubscriberInterface
                         $css = ".jatex-inline{display:inline;}
                             .jatex-inline div.MathJax_Display{display: inline !important; width: auto;}";
                         Factory::getDocument()
-	                        ->addStyleDeclaration($css);
+                            ->addStyleDeclaration($css);
                         break;
                 }
             }
         }
 
-        $html = '';
+        $html  = '';
         $style = '';
         if ($pconf->usetexrender == 'mathjax') {
             $html .= "<div class=\"latex {$class}\" {$style}>\[" . $treffer[2] . "\]</div>";
         }
 
         if ($pconf->usetexrender == 'katex') {
-            $html .= "<div class=\"jatex {$class}\" {$style}>
+            $html .= "<span class=\"jatex {$class}\" {$style}>
                 " . $treffer[2] . "
-            </div>";
-
-            // $script = "katex.render(\"$treffer[2]\", element, { throwOnError: false});";
-
-            // $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
-
-            // $wa->addInlineScript($script);
+            </span>";
 
         }
 
@@ -101,21 +92,26 @@ class JaTeX extends CMSPlugin implements SubscriberInterface
      * 
      * @since 2.0.0
      */
-    public function replaceShortcodes(Event $event): void{
+    public function replaceShortcodes(Event $event): void
+    {
         if (!$this->getApplication()->isClient(identifier: 'site')) {
             return;
         }
 
         [$context, $article, $params, $page] = array_values(array: $event->getArguments());
 
-        if ($context !== "com_content.article" 
-            && $context !== "com_content.featured" 
-            && $context !== "com_content.category") return;
+        if (
+            $context !== "com_content.article"
+            && $context !== "com_content.featured"
+            && $context !== "com_content.category"
+        )
+            return;
 
         $text = preg_replace_callback(
-            pattern: "/\{jatex(?: options:)??(.*)\}((?:.|\n)*)\{\/jatex\}/U", 
-            callback: ['SchuWeb\Plugin\Content\JaTeX\Extension\JaTeX', 'convertLatex'], 
-            subject: $article->text);
+            pattern: "/\{jatex(?: options:)??(.*)\}((?:.|\n)*)\{\/jatex\}/U",
+            callback: ['SchuWeb\Plugin\Content\JaTeX\Extension\JaTeX', 'convertLatex'],
+            subject: $article->text
+        );
 
         if ($text != NULL) {
             $article->text = $text;
@@ -195,30 +191,23 @@ class JaTeX extends CMSPlugin implements SubscriberInterface
         } else if (strcmp($cdn_local, "cdn") == 0) {
             $cdn_uri = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/';
 
-            $wa->registerAndUseStyle('plg_jatex.katex.css.cdn', 
+            $wa->registerAndUseStyle(
+                'plg_jatex.katex.css.cdn',
                 uri: "{$cdn_uri}katex.min.css",
-                attributes: [ 
+                attributes: [
                     'crossorigin' => 'anonymous',
-                    'integrity' => 'sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+'
+                    'integrity'   => 'sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+'
                 ]
             )
-            ->registerAndUseScript('plg_jatex.katex.js.cdn', 
-                uri: "{$cdn_uri}katex.min.js",
-                attributes: [ 
-                    'crossorigin' => 'anonymous',
-                    'integrity' => 'sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg'
-                ]
-            )
-            // ->registerAndUseScript('plg_jatex.auto-render.js.cdn', 
-            //     uri: "{$cdn_uri}contrib/auto-render.min.js",
-            //     attributes: [ 
-            //         'crossorigin' => 'anonymous',
-            //         'integrity' => 'sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk',
-            //         'onload'=>'renderMathInElement(document.body);'
-            //     ]
-            // )
-            ;
-// TODO        <script>
+                ->registerAndUseScript(
+                    'plg_jatex.katex.js.cdn',
+                    uri: "{$cdn_uri}katex.min.js",
+                    attributes: [
+                        'crossorigin' => 'anonymous',
+                        'integrity'   => 'sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg'
+                    ]
+                );
+            // TODO        <script>
 //   window.WebFontConfig = {
 //     custom: {
 //       families: ['KaTeX_AMS', 'KaTeX_Caligraphic:n4,n7', 'KaTeX_Fraktur:n4,n7',

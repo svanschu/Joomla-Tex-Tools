@@ -18,6 +18,7 @@
         <folder>css</folder>
         <folder>fonts</folder>
         <folder>js</folder>
+        <filename>joomla.asset.json</filename>
     </media>
     <languages folder="language">
         <language tag="en-GB">en-GB/plg_content_jatex.ini</language>

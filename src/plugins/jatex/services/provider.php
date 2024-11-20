@@ -12,6 +12,7 @@
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\WebAsset\WebAssetRegistry;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
@@ -22,7 +23,7 @@ use SchuWeb\Plugin\Content\JaTeX\Extension\JaTeX;
  * 
  * @since 2.0.0
  */
-return new class() implements ServiceProviderInterface {
+return new class () implements ServiceProviderInterface {
     /**
      * Registers the service provider with a DI container.
      *
@@ -44,6 +45,9 @@ return new class() implements ServiceProviderInterface {
 
                 $plugin = new JaTeX($subject, $config);
                 $plugin->setApplication($app);
+
+                $wa = $container->get(WebAssetRegistry::class);
+                $wa->addRegistryFile('media/plg_jatex/joomla.asset.json');
 
                 return $plugin;
             }

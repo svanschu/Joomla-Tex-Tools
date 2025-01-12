@@ -5,10 +5,50 @@
         <description>Joomla TeX Content Plugin</description>
         <element>jatex</element>
         <type>plugin</type>
+        <version>2.1.0</version>
+        <infourl title="JaTeX Plugin 2.1.0">https://extensions.schultschik.com/products/jatex/jatex-2-1-0</infourl>
+        <downloads>
+            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/2.1.0/jatex_2.1.0_20250112.zip</downloadurl>
+        </downloads>
+        <tags>
+            <tag>stable</tag>
+        </tags>
+        <maintainer>Schultschik Websolution - Extension Directory</maintainer>
+        <maintainerurl>https://extensions.schultschik.com/</maintainerurl>
+        <section>Updates</section>
+        <targetplatform name="joomla" version="5.0"/>
+        <client>site</client>
+        <folder>content</folder>
+    </update>
+    <update>
+        <name>Joomla TeX Content Plugin</name>
+        <description>Joomla TeX Content Plugin</description>
+        <element>jatex</element>
+        <type>plugin</type>
+        <version>2.1.0</version>
+        <infourl title="JaTeX Plugin 2.1.0">https://extensions.schultschik.com/products/jatex/jatex-2-1-0</infourl>
+        <downloads>
+            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/2.1.0/jatex_2.1.0_20250112.zip</downloadurl>
+        </downloads>
+        <tags>
+            <tag>stable</tag>
+        </tags>
+        <maintainer>Schultschik Websolution - Extension Directory</maintainer>
+        <maintainerurl>https://extensions.schultschik.com/</maintainerurl>
+        <section>Updates</section>
+        <targetplatform name="joomla" version="4.0"/>
+        <client>site</client>
+        <folder>content</folder>
+    </update>
+    <update>
+        <name>Joomla TeX Content Plugin</name>
+        <description>Joomla TeX Content Plugin</description>
+        <element>jatex</element>
+        <type>plugin</type>
         <version>2.0.0</version>
         <infourl title="JaTeX Plugin 2.0.0">https://extensions.schultschik.com/products/jatex/jatex-2-0-0</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/v2.0.0/jatex_2.0.0_20240309.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/2.0.0/jatex_2.0.0_20240309.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
@@ -28,7 +68,7 @@
         <version>2.0.0</version>
         <infourl title="JaTeX Plugin 2.0.0">https://extensions.schultschik.com/products/jatex/jatex-2-0-0</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/v2.0.0/jatex_2.0.0_20240309.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/2.0.0/jatex_2.0.0_20240309.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
@@ -48,7 +88,7 @@
         <version>1.5.0</version>
         <infourl title="SchuWeb JaTeX Plugin 1.5.0">https://extensions.schultschik.com/products/jatex/jatex-1-5-0</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/v1.5.0/jatex_1.5.0_20211007.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/1.5.0/jatex_1.5.0_20211007.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
@@ -68,7 +108,7 @@
         <version>1.5.0</version>
         <infourl title="SchuWeb JaTeX Plugin 1.5.0">https://extensions.schultschik.com/products/jatex/jatex-1-5-0</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/v1.5.0/jatex_1.5.0_20211007.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/1.5.0/jatex_1.5.0_20211007.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
@@ -88,7 +128,7 @@
         <version>1.4.0</version>
         <infourl title="SchuWeb JaTeX Plugin 1.4.0">https://extensions.schultschik.com/products/jatex/jatex-1-4-0</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/v1.4.0/jatex_1.4.0_20201207.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/1.4.0/jatex_1.4.0_20201207.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
@@ -108,7 +148,7 @@
         <version>1.3.0</version>
         <infourl title="SchuWeb JaTeX Plugin 1.3.0">https://extensions.schultschik.com/products/jatex/jatex-1-3-0</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/v1.3.0/jatex_1.3.0_20190121.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/svanschu/Joomla-Tex-Tools/releases/download/1.3.0/jatex_1.3.0_20190121.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>

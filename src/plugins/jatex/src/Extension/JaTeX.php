@@ -132,7 +132,7 @@ class JaTeX extends CMSPlugin implements SubscriberInterface
     /**
      * this will be called whenever the onContentPrepare event is triggered
      * 
-     * @since __BUMP_VERSION__
+     * @since 2.1.0
      */
     private function replaceShortcodesMathjax()
     {
@@ -178,7 +178,7 @@ class JaTeX extends CMSPlugin implements SubscriberInterface
     /**
      * this will be called whenever the onContentPrepare event is triggered
      * 
-     * @since __BUMP_VERSION__
+     * @since 2.1.0
      */
     private function replaceShortcodesKatex()
     {

@@ -12,7 +12,7 @@
     <property name="build.version" value="0.0.0" override="true" />
     <!-- get the date for build -->
     <tstamp prefix="build.date">
-        <format property = "XMLDATE" pattern = "%Y-%m-%d" />
+        <format property="DATE" pattern="dd. MMMM yyyy" locale="en_GB"/>
     </tstamp>
     <!-- Set the directory where the packages should be saved. Relative to the build dir -->
     <property name="builddir" value="./../packages/${extension_name}" override="true" />
@@ -51,7 +51,10 @@
     </target>
 
     <target name="prepare">
+        <mkdir dir="${builddir}/tmp" />
+        <mkdir dir="${builddir}/tmp/katex" />
         <mkdir dir="${builddir}/tmp/katex/media" />
+        <mkdir dir="${builddir}/tmp/jatex" />
         <mkdir dir="${builddir}/tmp/jatex/media" />
         <echo msg="Create temp folder OK!" />
     </target>
@@ -82,6 +85,32 @@
                 <include name="**"/>
             </fileset>
         </copy>
+        <delete>
+            <fileset dir="${builddir}/tmp/jatex/media/plg_jatex/js">
+                <include name="katex*.js" />
+            </fileset>
+        </delete>
+        <copy todir="${builddir}/tmp/jatex/media/plg_jatex/js/" >
+                <fileset dir="${media}/katex">
+                    <include name="katex*.js"/>
+                </fileset>
+        </copy>
+        <delete>
+            <fileset dir="${builddir}/tmp/jatex/media/plg_jatex/css">
+                <include name="katex*.css" />
+                <include name="fonts" />
+            </fileset>
+        </delete>
+        <copy todir="${builddir}/tmp/jatex/media/plg_jatex/css/" >
+                <fileset dir="${media}/katex">
+                    <include name="katex*.css"/>
+                </fileset>
+        </copy>
+        <copy todir="${builddir}/tmp/jatex/media/plg_jatex/css/fonts" >
+                <fileset dir="${media}/katex/fonts">
+                    <include name="**"/>
+                </fileset>
+        </copy>
         <echo msg="Copy was successfull" />
         <!-- insert version, build number and date into the xml files -->
         <reflexive>
@@ -91,7 +120,7 @@
             <filterchain>
                 <replaceregexp>
                     <regexp pattern="sw\.build\.version" replace="${build.version}" />
-                    <regexp pattern="sw\.build\.date" replace="${build.date.XMLDATE}" />
+                    <regexp pattern="sw\.build\.date" replace="${build.date.DATE}" />
                 </replaceregexp>
             </filterchain>
         </reflexive>

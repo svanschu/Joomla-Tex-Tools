@@ -26,6 +26,11 @@
     <config>
         <fields name="params">
             <fieldset name="basic">
+                <field
+                    name="sponsor"
+                    type="note"
+                    label="PLG_JATEX_KATEX_SPONSOR"
+                    class="alert alert-warning" />
                 <field name="usetexrender" type="radio" default="mathjax" label="PLG_JATEX_USETEXRENDER"
                        description="PLG_JATEX_USETEXRENDER_DESC" class="radio btn-group">
                     <option value="mathjax">MathJax</option>

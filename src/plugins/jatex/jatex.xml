@@ -71,7 +71,7 @@
                     type="note"
                     label="PLG_JATEX_KATEX_LOCAL_VERSION"
                     showon="usetexrender:katex[AND]katexcdn:local"
-                    description="0.16.11"
+                    description="0.16.19"
                     class="alert alert-info" />
             </fieldset>
         </fields>
